@@ -1,0 +1,2 @@
+# OpenBravoPOS
+OpenBravoPOS para Ecuador
