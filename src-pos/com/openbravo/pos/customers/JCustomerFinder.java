@@ -34,28 +34,32 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author  adrianromero
+ * @author adrianromero
  */
 public class JCustomerFinder extends javax.swing.JDialog implements EditorCreator {
 
     private CustomerInfo selectedCustomer;
     private ListProvider lpr;
-   
-    /** Creates new form JCustomerFinder */
+
+    /**
+     * Creates new form JCustomerFinder
+     */
     private JCustomerFinder(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
     }
 
-    /** Creates new form JCustomerFinder */
+    /**
+     * Creates new form JCustomerFinder
+     */
     private JCustomerFinder(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
     }
-    
+
     public static JCustomerFinder getCustomerFinder(Component parent, DataLogicCustomers dlCustomers) {
         Window window = getWindow(parent);
-        
+
         JCustomerFinder myMsg;
-        if (window instanceof Frame) { 
+        if (window instanceof Frame) {
             myMsg = new JCustomerFinder((Frame) window, true);
         } else {
             myMsg = new JCustomerFinder((Dialog) window, true);
@@ -64,7 +68,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         myMsg.applyComponentOrientation(parent.getComponentOrientation());
         return myMsg;
     }
-    
+
     public CustomerInfo getSelectedCustomer() {
         return selectedCustomer;
     }
@@ -82,7 +86,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         m_jtxtTaxID.reset();
         m_jtxtSearchKey.reset();
         m_jtxtName.reset();
-        
+
         m_jtxtTaxID.activate();
 
         lpr = new ListProviderCreator(dlCustomers.getCustomerList(), this);
@@ -93,34 +97,34 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         selectedCustomer = null;
     }
-    
+
     public void search(CustomerInfo customer) {
-        
+
         if (customer == null || customer.getName() == null || customer.getName().equals("")) {
-            
+
             m_jtxtTaxID.reset();
             m_jtxtSearchKey.reset();
             m_jtxtName.reset();
 
-            m_jtxtTaxID.activate();    
-            
+            m_jtxtTaxID.activate();
+
             cleanSearch();
         } else {
-            
+
             m_jtxtTaxID.setText(customer.getTaxid());
             m_jtxtSearchKey.setText(customer.getSearchkey());
             m_jtxtName.setText(customer.getName());
 
             m_jtxtTaxID.activate();
-            
+
             executeSearch();
         }
     }
-    
+
     private void cleanSearch() {
         jListCustomers.setModel(new MyListData(new ArrayList()));
     }
-    
+
     public void executeSearch() {
         try {
             jListCustomers.setModel(new MyListData(lpr.loadData()));
@@ -129,13 +133,28 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
             }
         } catch (BasicException e) {
             e.printStackTrace();
-        }        
+        }
     }
-    
+    /*
+        Función que busca un clinte y lo asigna
+    */
+    public void executeSearchDirecto() {
+        try {
+            jListCustomers.setModel(new MyListData(lpr.loadData()));
+            if (jListCustomers.getModel().getSize() > 0) {
+                jListCustomers.setSelectedIndex(0);
+            }
+            selectedCustomer = (CustomerInfo) jListCustomers.getSelectedValue();
+            dispose();
+        } catch (BasicException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Object createValue() throws BasicException {
-        
+
         Object[] afilter = new Object[6];
-        
+
         // TaxID
         if (m_jtxtTaxID.getText() == null || m_jtxtTaxID.getText().equals("")) {
             afilter[0] = QBFCompareEnum.COMP_NONE;
@@ -144,7 +163,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
             afilter[0] = QBFCompareEnum.COMP_RE;
             afilter[1] = "%" + m_jtxtTaxID.getText() + "%";
         }
-        
+
         // SearchKey
         if (m_jtxtSearchKey.getText() == null || m_jtxtSearchKey.getText().equals("")) {
             afilter[2] = QBFCompareEnum.COMP_NONE;
@@ -153,7 +172,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
             afilter[2] = QBFCompareEnum.COMP_RE;
             afilter[3] = "%" + m_jtxtSearchKey.getText() + "%";
         }
-        
+
         // Name
         if (m_jtxtName.getText() == null || m_jtxtName.getText().equals("")) {
             afilter[4] = QBFCompareEnum.COMP_NONE;
@@ -162,9 +181,9 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
             afilter[4] = QBFCompareEnum.COMP_RE;
             afilter[5] = "%" + m_jtxtName.getText() + "%";
         }
-        
+
         return afilter;
-    } 
+    }
 
     private static Window getWindow(Component parent) {
         if (parent == null) {
@@ -175,28 +194,28 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
             return getWindow(parent.getParent());
         }
     }
-    
+
     private static class MyListData extends javax.swing.AbstractListModel {
-        
+
         private java.util.List m_data;
-        
+
         public MyListData(java.util.List data) {
             m_data = data;
         }
-        
+
         public Object getElementAt(int index) {
             return m_data.get(index);
         }
-        
+
         public int getSize() {
             return m_data.size();
-        } 
-    }   
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -369,19 +388,19 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         selectedCustomer = (CustomerInfo) jListCustomers.getSelectedValue();
         dispose();
-        
+
     }//GEN-LAST:event_jcmdOKActionPerformed
 
     private void jcmdCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmdCancelActionPerformed
 
         dispose();
-        
+
     }//GEN-LAST:event_jcmdCancelActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
         executeSearch();
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jListCustomersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListCustomersValueChanged
@@ -391,23 +410,23 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
     }//GEN-LAST:event_jListCustomersValueChanged
 
     private void jListCustomersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListCustomersMouseClicked
-        
+
         if (evt.getClickCount() == 2) {
             selectedCustomer = (CustomerInfo) jListCustomers.getSelectedValue();
             dispose();
         }
-        
+
     }//GEN-LAST:event_jListCustomersMouseClicked
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- 
-        m_jtxtTaxID.reset();
-        m_jtxtSearchKey.reset();
-        m_jtxtName.reset();
 
-        m_jtxtTaxID.activate();    
+    m_jtxtTaxID.reset();
+    m_jtxtSearchKey.reset();
+    m_jtxtName.reset();
 
-        cleanSearch();           
+    m_jtxtTaxID.activate();
+
+    cleanSearch();
 }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
