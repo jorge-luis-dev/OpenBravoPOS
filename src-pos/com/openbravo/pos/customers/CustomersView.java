@@ -62,6 +62,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jSearchkey.getDocument().addDocumentListener(dirty);
         m_jName.getDocument().addDocumentListener(dirty);
         m_jCategory.addActionListener(dirty);
+        ComboDocumento.addActionListener(dirty);
         m_jNotes.getDocument().addDocumentListener(dirty);
         txtMaxdebt.getDocument().addDocumentListener(dirty);
         m_jVisible.addActionListener(dirty);
@@ -91,6 +92,11 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jCategory.setModel(m_CategoryModel);     
         
         ocultarElementos();
+        
+        ComboDocumento.addItem("RUC");
+        ComboDocumento.addItem("Cédula");
+        ComboDocumento.addItem("Pasaporte");
+        ComboDocumento.addItem("Consumidor Final");
     }
     /*
         Función para ocultar los elementos no necesarios
@@ -150,6 +156,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jSearchkey.setEnabled(false);
         m_jName.setEnabled(false);
         m_jCategory.setEnabled(false);
+        ComboDocumento.setEnabled(false);
         m_jNotes.setEnabled(false);
         txtMaxdebt.setEnabled(false);
         txtCurdebt.setEnabled(false);
@@ -206,6 +213,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jSearchkey.setEnabled(true);
         m_jName.setEnabled(true);
         m_jCategory.setEnabled(true);
+        ComboDocumento.setEnabled(true);
         m_jNotes.setEnabled(true);
         txtMaxdebt.setEnabled(true);
         txtCurdebt.setEnabled(true);
@@ -254,6 +262,9 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtAddress.setText(Formats.STRING.formatValue(customer[16]));
         txtAddress2.setText(Formats.STRING.formatValue(customer[17]));
         txtPostal.setText(Formats.STRING.formatValue(customer[18]));
+        
+//        ComboDocumento.setSelectedItem(value);
+        
         txtCity.setText(Formats.STRING.formatValue(customer[19]));
         txtRegion.setText(Formats.STRING.formatValue(customer[20]));
         txtCountry.setText(Formats.STRING.formatValue(customer[21]));      
@@ -285,6 +296,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCountry.setEnabled(false);
         
         m_jCategory.setEnabled(false);
+        ComboDocumento.setEnabled(false);
         
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
@@ -313,6 +325,9 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtAddress.setText(Formats.STRING.formatValue(customer[16]));
         txtAddress2.setText(Formats.STRING.formatValue(customer[17]));
         txtPostal.setText(Formats.STRING.formatValue(customer[18]));
+        
+        ComboDocumento.setSelectedItem(Formats.STRING.formatValue(customer[18]));
+        
         txtCity.setText(Formats.STRING.formatValue(customer[19]));
         txtRegion.setText(Formats.STRING.formatValue(customer[20]));
         txtCountry.setText(Formats.STRING.formatValue(customer[21]));   
@@ -344,6 +359,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCountry.setEnabled(true);
         
         m_jCategory.setEnabled(true);
+        ComboDocumento.setEnabled(true);
         
         jButton2.setEnabled(true);
         jButton3.setEnabled(true);
@@ -353,7 +369,10 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         Object[] customer = new Object[23];
         customer[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
         customer[1] = m_jTaxID.getText();
-        customer[2] = m_jSearchkey.getText();
+//        Cambio para busqueda por defecto el documento del cliente
+//        customer[2] = m_jSearchkey.getText();
+        customer[2] = m_jTaxID.getText();
+        
         customer[3] = m_jName.getText();
         customer[4] = m_jNotes.getText();
         customer[5] = Boolean.valueOf(m_jVisible.isSelected());
@@ -371,7 +390,11 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
        
         customer[16] = Formats.STRING.parseValue(txtAddress.getText());
         customer[17] = Formats.STRING.parseValue(txtAddress2.getText());
-        customer[18] = Formats.STRING.parseValue(txtPostal.getText());
+//        Cambio a combo box        
+//        customer[18] = Formats.STRING.parseValue(txtPostal.getText());
+        
+        customer[18] = Formats.STRING.parseValue(ComboDocumento.getSelectedItem().toString());
+        
         customer[19] = Formats.STRING.parseValue(txtCity.getText());
         customer[20] = Formats.STRING.parseValue(txtRegion.getText());
         customer[21] = Formats.STRING.parseValue(txtCountry.getText()); 
@@ -429,8 +452,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCountry = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
         txtAddress2 = new javax.swing.JTextField();
-        jLabel22 = new javax.swing.JLabel();
-        txtPostal = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         txtCity = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
@@ -442,10 +463,15 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCurdebt = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtCurdate = new javax.swing.JTextField();
+        txtPostal = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        ComboDocumento = new javax.swing.JComboBox();
 
         jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
 
         jLabel8.setText(AppLocal.getIntString("label.searchkey")); // NOI18N
+
+        m_jSearchkey.setEditable(false);
 
         jLabel4.setText(AppLocal.getIntString("label.visible")); // NOI18N
 
@@ -573,8 +599,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
 
         jLabel21.setText(AppLocal.getIntString("label.address2")); // NOI18N
 
-        jLabel22.setText(AppLocal.getIntString("label.postal")); // NOI18N
-
         jLabel23.setText(AppLocal.getIntString("label.city")); // NOI18N
 
         jLabel24.setText(AppLocal.getIntString("label.region")); // NOI18N
@@ -590,10 +614,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtAddress2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -615,11 +635,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(txtAddress2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel22)
-                    .addComponent(txtPostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
                     .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -667,6 +683,10 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCurdate.setEditable(false);
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        txtPostal.setEditable(false);
+
+        jLabel22.setText(AppLocal.getIntString("label.postal")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -685,10 +705,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                             .addComponent(jTabbedPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(m_jTaxID, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -718,7 +734,21 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(52, 52, 52)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(txtPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(ComboDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(m_jTaxID, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
@@ -726,6 +756,12 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtPostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ComboDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(m_jTaxID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -733,7 +769,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(m_jSearchkey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -759,7 +795,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                     .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(m_jVisible, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -783,6 +819,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox ComboDocumento;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
