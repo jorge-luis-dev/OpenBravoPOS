@@ -29,7 +29,7 @@ import java.io.Serializable;
 public class CustomerInfo implements Serializable {
     
     private static final long serialVersionUID = 9083257536541L;
-    protected String id;
+    protected String id;   
     protected String searchkey;
     protected String taxid;
     protected String name;
@@ -41,10 +41,14 @@ public class CustomerInfo implements Serializable {
         this.taxid = null;
         this.name = null;
     }
-    
+        
     public String getId() {
         return id;
     }    
+    
+    public void setId(String id) {
+        this.id = id;
+    }
     
     public String getTaxid() {
         return taxid;
