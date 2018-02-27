@@ -53,7 +53,7 @@ public class JPanelTicketSales extends JPanelTicket {
 //        int heigth = Integer.parseInt(m_jbtnconfig.getProperty("img-height", "54"));
 //Cambio de tamaño del botón del producto
         int width = 80;
-        int heigth = 70;
+        int heigth = 90;
         
         m_cat = new JCatalog(dlSales,
                 "true".equals(m_jbtnconfig.getProperty("pricevisible")),
