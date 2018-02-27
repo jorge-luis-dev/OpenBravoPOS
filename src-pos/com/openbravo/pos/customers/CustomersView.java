@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.UUID;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -113,7 +112,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                         "El el campo de texto no tiene que estar vacío",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
-                SwingUtilities.invokeLater(new FocusGrabber(campo));
             }
         }
     }
@@ -128,7 +126,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                             ruc.getError(),
                             "Error al validar el RUC",
                             JOptionPane.ERROR_MESSAGE);
-                    SwingUtilities.invokeLater(new FocusGrabber(campo));
                 }
             } else if (ComboDocumento.getSelectedItem().toString().equals("Cédula")) {
                 Ci ci = new Ci(documento);
@@ -137,7 +134,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                             ci.getError(),
                             "Error al validar la Cédula",
                             JOptionPane.ERROR_MESSAGE);
-                    SwingUtilities.invokeLater(new FocusGrabber(campo));
                 }
             } else if (ComboDocumento.getSelectedItem().toString().equals("Consumidor Final")) {
                 if (!documento.equals("9999999999999")) {
@@ -145,7 +141,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                             "El Consumidor Final debe ser 9999999999999",
                             "Error el Consumidor Final",
                             JOptionPane.ERROR_MESSAGE);
-                    SwingUtilities.invokeLater(new FocusGrabber(campo));
                 }
             }
         }

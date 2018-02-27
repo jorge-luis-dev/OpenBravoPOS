@@ -18,6 +18,8 @@
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 package com.openbravo.pos.payment;
 
+import com.documento.Ci;
+import com.documento.Ruc;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
@@ -29,9 +31,17 @@ import com.openbravo.format.Formats;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.DataLogicSystem;
 import java.awt.ComponentOrientation;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -528,12 +538,22 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         radioCI.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         radioCI.setText("Cédula");
         radioCI.setPreferredSize(new java.awt.Dimension(86, 40));
+        radioCI.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                radioCIItemStateChanged(evt);
+            }
+        });
         jPanel7.add(radioCI);
 
         grupoDocumento.add(radioPasaporte);
         radioPasaporte.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         radioPasaporte.setText("Pasaporte");
         radioPasaporte.setPreferredSize(new java.awt.Dimension(110, 40));
+        radioPasaporte.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                radioPasaporteItemStateChanged(evt);
+            }
+        });
         jPanel7.add(radioPasaporte);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -550,6 +570,11 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
                 txtDocumentoFocusGained(evt);
             }
         });
+        txtDocumento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDocumentoActionPerformed(evt);
+            }
+        });
         jPanel7.add(txtDocumento);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -560,6 +585,11 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         txtRazonSocial.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         txtRazonSocial.setName(""); // NOI18N
         txtRazonSocial.setPreferredSize(new java.awt.Dimension(300, 40));
+        txtRazonSocial.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtRazonSocialFocusGained(evt);
+            }
+        });
         jPanel7.add(txtRazonSocial);
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -650,6 +680,30 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
 
     private void m_jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonOKActionPerformed
 
+        if (!validaVacio(txtDocumento, "Documento")) {
+            return;
+        }
+
+        if (!validaVacio(txtRazonSocial, "Razón Social")) {
+            return;
+        }
+
+        if (!validaDocumento(txtDocumento)) {
+            return;
+        }
+
+        String razonSocial = getCliente(txtDocumento.getText());
+
+        if (!razonSocial.isEmpty()) {
+            txtRazonSocial.setText(razonSocial);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "El cliente no existe",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         PaymentInfo returnPayment = ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).executePayment();
         if (returnPayment != null) {
             m_aPaymentInfo.add(returnPayment);
@@ -660,6 +714,79 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         radioConsumidorFinal.setSelected(true);
 
     }//GEN-LAST:event_m_jButtonOKActionPerformed
+
+    private void saveCliente() {
+        
+    }
+    
+    private String getCliente(String cliente) {
+        String razonSocial = "";
+
+        try {
+            Connection connect = app.getSession().getConnection();
+            PreparedStatement preparedStatement = connect.
+                    prepareStatement("select name from CUSTOMERS "
+                            + "where TAXID = ?");
+            preparedStatement.setString(1, cliente);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                razonSocial = resultSet.getString("name");
+                System.out.println("Cliente " + razonSocial);
+                break;
+            }
+            connect.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(JPaymentSelect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return razonSocial;
+    }
+
+    private Boolean validaVacio(javax.swing.JTextField campo, String nombre) {
+        String cadena = campo.getText();
+        cadena = cadena.replaceAll("\\s+", "");
+        if (cadena.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "El el campo de texto " + nombre + " no tiene que estar vacío",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    private Boolean validaDocumento(javax.swing.JTextField campo) {
+        String documento = campo.getText();
+        if (tipoDocumento.equals("RUC")) {
+            Ruc ruc = new Ruc(documento);
+            if (!ruc.validar()) {
+                JOptionPane.showMessageDialog(this,
+                        ruc.getError(),
+                        "Error al validar el RUC",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else if (tipoDocumento.equals("Cédula")) {
+            Ci ci = new Ci(documento);
+            if (!ci.validar()) {
+                JOptionPane.showMessageDialog(this,
+                        ci.getError(),
+                        "Error al validar la Cédula",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else if (tipoDocumento.equals("Consumidor Final")) {
+            if (!documento.equals("9999999999999")) {
+                JOptionPane.showMessageDialog(this,
+                        "El Consumidor Final debe ser 9999999999999",
+                        "Error el Consumidor Final",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     private void m_jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonCancelActionPerformed
 
@@ -677,6 +804,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtDocumento.setEditable(true);
             txtRazonSocial.setEditable(true);
             txtCorreoElectronico.setEditable(true);
+            tipoDocumento = "RUC";
         }
     }//GEN-LAST:event_radioRUCItemStateChanged
 
@@ -688,8 +816,42 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtDocumento.setEditable(false);
             txtRazonSocial.setEditable(false);
             txtCorreoElectronico.setEditable(false);
+            tipoDocumento = "Consumidor Final";
         }
     }//GEN-LAST:event_radioConsumidorFinalItemStateChanged
+
+    private void radioCIItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_radioCIItemStateChanged
+        if (radioCI.isSelected()) {
+            txtDocumento.requestFocus();
+            txtDocumento.setEditable(true);
+            txtRazonSocial.setEditable(true);
+            txtCorreoElectronico.setEditable(true);
+            tipoDocumento = "Cédula";
+        }
+    }//GEN-LAST:event_radioCIItemStateChanged
+
+    private void radioPasaporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_radioPasaporteItemStateChanged
+        if (radioPasaporte.isSelected()) {
+            txtDocumento.requestFocus();
+            txtDocumento.setEditable(true);
+            txtRazonSocial.setEditable(true);
+            txtCorreoElectronico.setEditable(true);
+            tipoDocumento = "Pasaporte";
+        }
+    }//GEN-LAST:event_radioPasaporteItemStateChanged
+
+    private void txtRazonSocialFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRazonSocialFocusGained
+        txtRazonSocial.selectAll();
+        txtRazonSocial.setText(getCliente(txtDocumento.getText()));
+    }//GEN-LAST:event_txtRazonSocialFocusGained
+
+    private void txtDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDocumentoActionPerformed
+        String razonSocial = getCliente(txtDocumento.getText());
+        if (!razonSocial.isEmpty()) {
+            txtRazonSocial.setText(razonSocial);
+        }
+        txtRazonSocial.requestFocus();
+    }//GEN-LAST:event_txtDocumentoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup grupoDocumento;

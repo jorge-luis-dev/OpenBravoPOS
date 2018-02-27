@@ -559,37 +559,38 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     /*
         Función para recuperar un consumidor final si no se elige.
     */
-    private boolean getConsumidorFinal() {
-        CustomerInfo c = new CustomerInfo("9999999999999");
-
-        if (m_oTicket.getCustomer() == null) {
-            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
-            c.setSearchkey("9999999999999");
-            c.setName("CONSUMIDOR FINAL");
-            finder.executeSearchDirecto();
-            c = finder.getSelectedCustomer();
-            if (c == null) {
-                return false;
-            }
-            try {
-                m_oTicket.setCustomer(finder.getSelectedCustomer() == null
-                        ? null
-                        : dlSales.loadCustomerExt(finder.getSelectedCustomer().getId()));
-            } catch (BasicException e) {
-                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), e);
-                msg.show(this);
-            }
-
-        }
-        return true;
-    }
+//    private boolean getConsumidorFinal() {
+//        CustomerInfo c = new CustomerInfo("9999999999999");
+//
+//        if (m_oTicket.getCustomer() == null) {
+//            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
+//            c.setSearchkey("9999999999999");
+//            c.setName("CONSUMIDOR FINAL");
+//            finder.executeSearchDirecto();
+//            c = finder.getSelectedCustomer();
+//            if (c == null) {
+//                return false;
+//            }
+//            try {
+//                m_oTicket.setCustomer(finder.getSelectedCustomer() == null
+//                        ? null
+//                        : dlSales.loadCustomerExt(finder.getSelectedCustomer().getId()));
+//            } catch (BasicException e) {
+//                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), e);
+//                msg.show(this);
+//            }
+//
+//        }
+////        System.out.println("Nombre Cliente " + c.getName());
+//        return true;
+//    }
 
     private void stateTransition(char cTrans) {
 
-        if (getConsumidorFinal() == false) {
-            JOptionPane.showMessageDialog(this, "El  Consumidor Final, no existe. Crear Consumidor Final en clientes por favor", "Error: Cliente no existe", JOptionPane.ERROR_MESSAGE);           
-            return;
-        }
+//        if (getConsumidorFinal() == false) {
+//            JOptionPane.showMessageDialog(this, "El  Consumidor Final, no existe. Crear Consumidor Final en clientes por favor", "Error: Cliente no existe", JOptionPane.ERROR_MESSAGE);           
+//            return;
+//        }
 
         if (cTrans == '\n') {
             // Codigo de barras introducido
@@ -1382,6 +1383,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jPanel2.add(m_jEditLine);
 
         jEditAttributes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/colorize.png"))); // NOI18N
+        jEditAttributes.setEnabled(false);
         jEditAttributes.setFocusPainted(false);
         jEditAttributes.setFocusable(false);
         jEditAttributes.setMargin(new java.awt.Insets(8, 14, 8, 14));
@@ -1403,7 +1405,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanTotals.setLayout(new java.awt.GridBagLayout());
 
-        m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
         m_jTotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jTotalEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTotalEuros.setOpaque(true);
@@ -1426,6 +1428,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
         m_jPanTotals.add(m_jLblTotalEuros1, gridBagConstraints);
 
+        m_jSubtotalEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         m_jSubtotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jSubtotalEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jSubtotalEuros.setOpaque(true);
@@ -1440,6 +1443,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
         m_jPanTotals.add(m_jSubtotalEuros, gridBagConstraints);
 
+        m_jTaxesEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         m_jTaxesEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jTaxesEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTaxesEuros.setOpaque(true);
