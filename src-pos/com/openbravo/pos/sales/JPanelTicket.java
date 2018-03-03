@@ -893,7 +893,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private boolean closeTicket(TicketInfo ticket, Object ticketext) {
 
-        boolean resultok = false;
+        boolean resultok = false;        
 
         if (m_App.getAppUserView().getUser().hasPermission("sales.Total")) {
 

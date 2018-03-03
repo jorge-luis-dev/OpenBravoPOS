@@ -20,6 +20,7 @@ package com.openbravo.pos.payment;
 
 import com.documento.Ci;
 import com.documento.Ruc;
+import com.ideas.qubits.UtilityPos;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
@@ -63,6 +64,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private Map<String, JPaymentInterface> payments = new HashMap<String, JPaymentInterface>();
     private String m_sTransactionID;
     private String tipoDocumento = "Consumidor Final";
+    private String documento = "Consumidor Final";    
 
     /**
      * Creates new form JPaymentSelect
@@ -123,6 +125,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtCorreoElectronico.setText("");
             txtDocumento.setEditable(false);
             txtRazonSocial.setEditable(false);
+            txtDireccion.setEditable(false);
             txtCorreoElectronico.setEditable(false);
         }
 
@@ -440,6 +443,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         txtRazonSocial = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtCorreoElectronico = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDireccion = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         m_jButtonPrint = new javax.swing.JToggleButton();
@@ -509,6 +514,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         jPanel3.add(m_jTabPayment, java.awt.BorderLayout.CENTER);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jPanel7.setPreferredSize(new java.awt.Dimension(848, 200));
 
         grupoDocumento.add(radioConsumidorFinal);
@@ -590,17 +596,39 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
                 txtRazonSocialFocusGained(evt);
             }
         });
+        txtRazonSocial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRazonSocialActionPerformed(evt);
+            }
+        });
         jPanel7.add(txtRazonSocial);
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Correo Electrónico");
         jLabel3.setName("lblCorreoElectronico"); // NOI18N
+        jLabel3.setPreferredSize(new java.awt.Dimension(140, 20));
         jPanel7.add(jLabel3);
 
         txtCorreoElectronico.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
         txtCorreoElectronico.setName(""); // NOI18N
         txtCorreoElectronico.setPreferredSize(new java.awt.Dimension(260, 40));
+        txtCorreoElectronico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCorreoElectronicoActionPerformed(evt);
+            }
+        });
         jPanel7.add(txtCorreoElectronico);
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel4.setText("Dirección");
+        jLabel4.setPreferredSize(new java.awt.Dimension(128, 20));
+        jPanel7.add(jLabel4);
+
+        txtDireccion.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
+        txtDireccion.setText("Ibarra");
+        txtDireccion.setPreferredSize(new java.awt.Dimension(260, 40));
+        jPanel7.add(txtDireccion);
 
         jPanel3.add(jPanel7, java.awt.BorderLayout.PAGE_END);
 
@@ -692,11 +720,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             return;
         }
 
-        String razonSocial = getCliente(txtDocumento.getText());
-
-        if (!razonSocial.isEmpty()) {
-            txtRazonSocial.setText(razonSocial);
-        } else {
+        if (!getCliente(txtDocumento.getText())) {
             JOptionPane.showMessageDialog(this,
                     "El cliente no existe",
                     "Advertencia",
@@ -715,31 +739,80 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
 
     }//GEN-LAST:event_m_jButtonOKActionPerformed
 
-    private void saveCliente() {
-        
+    private String getTipoDocumento() {
+        if (radioConsumidorFinal.isSelected()) {
+            return radioConsumidorFinal.getText();
+        }
+        else if (radioRUC.isSelected()) {
+            return radioRUC.getText();
+        }
+        else if (radioCI.isSelected()) {
+            return radioCI.getText();
+        }
+        return "Pasaporte";
     }
     
-    private String getCliente(String cliente) {
-        String razonSocial = "";
-
+    private void saveCliente() {
+        Boolean existe = false;
+        UtilityPos u = new UtilityPos();
+        String apellido = u.extraerApellido(txtRazonSocial.getText().trim());
+        String nombre = u.extraerNombre(txtRazonSocial.getText().trim());
+        
         try {
             Connection connect = app.getSession().getConnection();
             PreparedStatement preparedStatement = connect.
-                    prepareStatement("select name from CUSTOMERS "
+                    prepareStatement("INSERT INTO CUSTOMERS "
+                            + "(ID, "
+                            + "SEARCHKEY, "
+                            + "TAXID, "
+                            + "NAME, "
+                            + "ADDRESS, "
+                            + "POSTAL, "
+                            + "FIRSTNAME, "
+                            + "LASTNAME, "
+                            + "EMAIL) "
+                            + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            preparedStatement.setString(1, txtDocumento.getText());
+            preparedStatement.setString(2, txtDocumento.getText());
+            preparedStatement.setString(3, txtDocumento.getText());
+            preparedStatement.setString(4, txtRazonSocial.getText());
+            preparedStatement.setString(5, txtDireccion.getText());
+            preparedStatement.setString(6, getTipoDocumento());
+            preparedStatement.setString(7, nombre);
+            preparedStatement.setString(8, apellido);
+            preparedStatement.setString(9, txtCorreoElectronico.getText());
+            
+            preparedStatement.execute();
+
+            connect.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(JPaymentSelect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private Boolean getCliente(String cliente) {
+        Boolean existe = false;
+        try {
+            Connection connect = app.getSession().getConnection();
+            PreparedStatement preparedStatement = connect.
+                    prepareStatement("select name, email from CUSTOMERS "
                             + "where TAXID = ?");
             preparedStatement.setString(1, cliente);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                razonSocial = resultSet.getString("name");
-                System.out.println("Cliente " + razonSocial);
+                existe = true;
+                txtRazonSocial.setText(resultSet.getString("name"));
+                txtCorreoElectronico.setText(resultSet.getString("email"));
                 break;
             }
             connect.close();
         } catch (SQLException ex) {
             Logger.getLogger(JPaymentSelect.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-        return razonSocial;
+        return existe;
     }
 
     private Boolean validaVacio(javax.swing.JTextField campo, String nombre) {
@@ -804,6 +877,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtDocumento.setEditable(true);
             txtRazonSocial.setEditable(true);
             txtCorreoElectronico.setEditable(true);
+            txtDireccion.setEditable(true);
             tipoDocumento = "RUC";
         }
     }//GEN-LAST:event_radioRUCItemStateChanged
@@ -816,6 +890,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtDocumento.setEditable(false);
             txtRazonSocial.setEditable(false);
             txtCorreoElectronico.setEditable(false);
+            txtDireccion.setEditable(false);
             tipoDocumento = "Consumidor Final";
         }
     }//GEN-LAST:event_radioConsumidorFinalItemStateChanged
@@ -826,6 +901,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtDocumento.setEditable(true);
             txtRazonSocial.setEditable(true);
             txtCorreoElectronico.setEditable(true);
+            txtDireccion.setEditable(true);
             tipoDocumento = "Cédula";
         }
     }//GEN-LAST:event_radioCIItemStateChanged
@@ -836,28 +912,45 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtDocumento.setEditable(true);
             txtRazonSocial.setEditable(true);
             txtCorreoElectronico.setEditable(true);
+            txtDireccion.setEditable(true);
             tipoDocumento = "Pasaporte";
         }
     }//GEN-LAST:event_radioPasaporteItemStateChanged
 
     private void txtRazonSocialFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRazonSocialFocusGained
         txtRazonSocial.selectAll();
-        txtRazonSocial.setText(getCliente(txtDocumento.getText()));
     }//GEN-LAST:event_txtRazonSocialFocusGained
 
     private void txtDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDocumentoActionPerformed
-        String razonSocial = getCliente(txtDocumento.getText());
-        if (!razonSocial.isEmpty()) {
-            txtRazonSocial.setText(razonSocial);
+        if (!validaVacio(txtDocumento, "Documento")) {
+            return;
+        }
+        if (!validaDocumento(txtDocumento)) {
+            return;
+        }
+        if (!getCliente(txtDocumento.getText())) {
+            txtRazonSocial.setText("");
         }
         txtRazonSocial.requestFocus();
     }//GEN-LAST:event_txtDocumentoActionPerformed
+
+    private void txtRazonSocialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRazonSocialActionPerformed
+        if (!validaVacio(txtRazonSocial, "Razón Social")) {
+            return;
+        }
+        txtCorreoElectronico.requestFocus();
+    }//GEN-LAST:event_txtRazonSocialActionPerformed
+
+    private void txtCorreoElectronicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoElectronicoActionPerformed
+        txtDireccion.requestFocus();
+    }//GEN-LAST:event_txtCorreoElectronicoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup grupoDocumento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -880,6 +973,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private javax.swing.JRadioButton radioPasaporte;
     private javax.swing.JRadioButton radioRUC;
     private javax.swing.JTextField txtCorreoElectronico;
+    private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDocumento;
     private javax.swing.JTextField txtRazonSocial;
     // End of variables declaration//GEN-END:variables
