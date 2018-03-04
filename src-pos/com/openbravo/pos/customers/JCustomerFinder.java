@@ -23,6 +23,7 @@ import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.data.user.EditorCreator;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
+import com.openbravo.editor.JEditorString;
 import com.openbravo.pos.forms.AppLocal;
 import java.awt.Component;
 import java.awt.Dialog;
@@ -31,6 +32,7 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.ListModel;
 
 /**
  *
@@ -135,12 +137,20 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
             e.printStackTrace();
         }
     }
+
     /*
-        Función que busca un clinte y lo asigna
-    */
+        Función que busca un cliente y lo asigna
+     */
     public void executeSearchDirecto() {
         try {
             jListCustomers.setModel(new MyListData(lpr.loadData()));
+
+//            ListModel model = jListCustomers.getModel();
+//
+//            for (int i = 0; i < model.getSize(); i++) {
+//                Object o = model.getElementAt(i);
+//            }
+
             if (jListCustomers.getModel().getSize() > 0) {
                 jListCustomers.setSelectedIndex(0);
             }
@@ -452,4 +462,12 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private com.openbravo.editor.JEditorString m_jtxtSearchKey;
     private com.openbravo.editor.JEditorString m_jtxtTaxID;
     // End of variables declaration//GEN-END:variables
+
+    public JEditorString getM_jtxtTaxID() {
+        return m_jtxtTaxID;
+    }
+
+    public void setM_jtxtTaxID(JEditorString m_jtxtTaxID) {
+        this.m_jtxtTaxID = m_jtxtTaxID;
+    }
 }

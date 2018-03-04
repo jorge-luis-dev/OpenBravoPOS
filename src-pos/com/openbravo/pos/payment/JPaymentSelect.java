@@ -32,7 +32,6 @@ import com.openbravo.format.Formats;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.DataLogicSystem;
 import java.awt.ComponentOrientation;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,7 +63,15 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private Map<String, JPaymentInterface> payments = new HashMap<String, JPaymentInterface>();
     private String m_sTransactionID;
     private String tipoDocumento = "Consumidor Final";
-    private String documento = "Consumidor Final";    
+    private String documento = "";
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
 
     /**
      * Creates new form JPaymentSelect
@@ -721,12 +728,10 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         }
 
         if (!getCliente(txtDocumento.getText())) {
-            JOptionPane.showMessageDialog(this,
-                    "El cliente no existe",
-                    "Advertencia",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
+            saveCliente();
         }
+        
+        this.documento = txtDocumento.getText();
 
         PaymentInfo returnPayment = ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).executePayment();
         if (returnPayment != null) {
@@ -736,28 +741,13 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         }
 
         radioConsumidorFinal.setSelected(true);
-
     }//GEN-LAST:event_m_jButtonOKActionPerformed
 
-    private String getTipoDocumento() {
-        if (radioConsumidorFinal.isSelected()) {
-            return radioConsumidorFinal.getText();
-        }
-        else if (radioRUC.isSelected()) {
-            return radioRUC.getText();
-        }
-        else if (radioCI.isSelected()) {
-            return radioCI.getText();
-        }
-        return "Pasaporte";
-    }
-    
     private void saveCliente() {
-        Boolean existe = false;
         UtilityPos u = new UtilityPos();
         String apellido = u.extraerApellido(txtRazonSocial.getText().trim());
         String nombre = u.extraerNombre(txtRazonSocial.getText().trim());
-        
+
         try {
             Connection connect = app.getSession().getConnection();
             PreparedStatement preparedStatement = connect.
@@ -776,13 +766,13 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             preparedStatement.setString(1, txtDocumento.getText());
             preparedStatement.setString(2, txtDocumento.getText());
             preparedStatement.setString(3, txtDocumento.getText());
-            preparedStatement.setString(4, txtRazonSocial.getText());
-            preparedStatement.setString(5, txtDireccion.getText());
-            preparedStatement.setString(6, getTipoDocumento());
-            preparedStatement.setString(7, nombre);
-            preparedStatement.setString(8, apellido);
+            preparedStatement.setString(4, txtRazonSocial.getText().toUpperCase());
+            preparedStatement.setString(5, txtDireccion.getText().toUpperCase());
+            preparedStatement.setString(6, this.tipoDocumento);
+            preparedStatement.setString(7, nombre.toUpperCase());
+            preparedStatement.setString(8, apellido.toUpperCase());
             preparedStatement.setString(9, txtCorreoElectronico.getText());
-            
+
             preparedStatement.execute();
 
             connect.close();
@@ -878,7 +868,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtRazonSocial.setEditable(true);
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
-            tipoDocumento = "RUC";
+            this.tipoDocumento = "RUC";
         }
     }//GEN-LAST:event_radioRUCItemStateChanged
 
@@ -891,7 +881,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtRazonSocial.setEditable(false);
             txtCorreoElectronico.setEditable(false);
             txtDireccion.setEditable(false);
-            tipoDocumento = "Consumidor Final";
+            this.tipoDocumento = "Consumidor Final";
         }
     }//GEN-LAST:event_radioConsumidorFinalItemStateChanged
 
@@ -902,7 +892,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtRazonSocial.setEditable(true);
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
-            tipoDocumento = "Cédula";
+            this.tipoDocumento = "Cédula";
         }
     }//GEN-LAST:event_radioCIItemStateChanged
 
@@ -913,7 +903,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtRazonSocial.setEditable(true);
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
-            tipoDocumento = "Pasaporte";
+            this.tipoDocumento = "Pasaporte";
         }
     }//GEN-LAST:event_radioPasaporteItemStateChanged
 

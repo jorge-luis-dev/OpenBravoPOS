@@ -36,6 +36,7 @@ import com.openbravo.pos.payment.JPaymentSelect;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ListKeyed;
 import com.openbravo.data.loader.SentenceList;
+import com.openbravo.editor.JEditorString;
 import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.customers.DataLogicCustomers;
@@ -556,41 +557,42 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             Toolkit.getDefaultToolkit().beep();
         }
     }
+
     /*
-        Función para recuperar un consumidor final si no se elige.
-    */
-//    private boolean getConsumidorFinal() {
-//        CustomerInfo c = new CustomerInfo("9999999999999");
-//
-//        if (m_oTicket.getCustomer() == null) {
-//            JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
-//            c.setSearchkey("9999999999999");
-//            c.setName("CONSUMIDOR FINAL");
-//            finder.executeSearchDirecto();
-//            c = finder.getSelectedCustomer();
-//            if (c == null) {
-//                return false;
-//            }
-//            try {
-//                m_oTicket.setCustomer(finder.getSelectedCustomer() == null
-//                        ? null
-//                        : dlSales.loadCustomerExt(finder.getSelectedCustomer().getId()));
-//            } catch (BasicException e) {
-//                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), e);
-//                msg.show(this);
-//            }
-//
-//        }
-////        System.out.println("Nombre Cliente " + c.getName());
-//        return true;
-//    }
+        Función para recuperar el cliente seleccionado en el JPaymentSelect. 
+     */
+    private boolean getCliente(String documento) {
+
+        System.out.println("Documento: " + documento);
+
+        CustomerInfo c = new CustomerInfo(documento);
+
+        JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
+        c.setSearchkey(documento);
+
+        com.openbravo.editor.JEditorString m_jtxtTax = new JEditorString();
+        m_jtxtTax.setText(documento);
+        
+        finder.setM_jtxtTaxID(m_jtxtTax);
+                
+        finder.executeSearchDirecto();
+        c = finder.getSelectedCustomer();
+        if (c == null) {
+            return false;
+        }
+        try {
+            m_oTicket.setCustomer(finder.getSelectedCustomer() == null
+                    ? null
+                    : dlSales.loadCustomerExt(finder.getSelectedCustomer().getId()));
+        } catch (BasicException e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), e);
+            msg.show(this);
+        }
+
+        return true;
+    }
 
     private void stateTransition(char cTrans) {
-
-//        if (getConsumidorFinal() == false) {
-//            JOptionPane.showMessageDialog(this, "El  Consumidor Final, no existe. Crear Consumidor Final en clientes por favor", "Error: Cliente no existe", JOptionPane.ERROR_MESSAGE);           
-//            return;
-//        }
 
         if (cTrans == '\n') {
             // Codigo de barras introducido
@@ -875,6 +877,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
                 // Totals() Igual;
             } else if (cTrans == ' ' || cTrans == '=') {
+
                 if (m_oTicket.getLinesCount() > 0) {
 
                     if (closeTicket(m_oTicket, m_oTicketExt)) {
@@ -884,6 +887,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         // repaint current ticket
                         refreshTicket();
                     }
+
                 } else {
                     Toolkit.getDefaultToolkit().beep();
                 }
@@ -893,7 +897,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private boolean closeTicket(TicketInfo ticket, Object ticketext) {
 
-        boolean resultok = false;        
+        boolean resultok = false;
 
         if (m_App.getAppUserView().getUser().hasPermission("sales.Total")) {
 
@@ -921,6 +925,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
                         // assign the payments selected and calculate taxes.         
                         ticket.setPayments(paymentdialog.getSelectedPayments());
+
+                        getCliente(paymentdialogreceipt.getDocumento());
 
                         // Asigno los valores definitivos del ticket...
                         ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
