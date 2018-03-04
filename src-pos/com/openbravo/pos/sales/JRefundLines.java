@@ -82,6 +82,7 @@ public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
         jPanel2.setLayout(new java.awt.GridLayout(0, 1, 0, 5));
 
         m_jbtnAddOne.setText(AppLocal.getIntString("button.refundone")); // NOI18N
+        m_jbtnAddOne.setEnabled(false);
         m_jbtnAddOne.setFocusPainted(false);
         m_jbtnAddOne.setFocusable(false);
         m_jbtnAddOne.setMargin(new java.awt.Insets(8, 14, 8, 14));
@@ -94,6 +95,7 @@ public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
         jPanel2.add(m_jbtnAddOne);
 
         m_jbtnAddLine.setText(AppLocal.getIntString("button.refundline")); // NOI18N
+        m_jbtnAddLine.setEnabled(false);
         m_jbtnAddLine.setFocusPainted(false);
         m_jbtnAddLine.setFocusable(false);
         m_jbtnAddLine.setMargin(new java.awt.Insets(8, 14, 8, 14));
