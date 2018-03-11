@@ -30,6 +30,7 @@ import com.openbravo.pos.printer.*;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.JMessageDialog;
 import com.openbravo.data.loader.SentenceList;
+import com.openbravo.format.Formats;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.scripting.ScriptEngine;
@@ -451,6 +452,7 @@ public class JTicketsBagTicket extends JTicketsBag {
             refundticket.setPayments(m_ticket.getPayments());
             refundticket.setLines(aRefundLines);
 
+            //Genera los impuestos de la devolución
             TaxesLogic taxeslogic;
             DataLogicSales dlSales;
             dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSales");
@@ -458,9 +460,7 @@ public class JTicketsBagTicket extends JTicketsBag {
             senttax = dlSales.getTaxList();
             java.util.List<TaxInfo> taxlist = senttax.list();
             taxeslogic = new TaxesLogic(taxlist);
-
             taxeslogic.calculateTaxes(m_ticket);
-
             refundticket.setTaxes(m_ticket.getTaxes());
 
             System.out.println("Refund Cliente" + refundticket.getCustomerId());
@@ -469,6 +469,7 @@ public class JTicketsBagTicket extends JTicketsBag {
             System.out.println("Money " + m_ticket.getActiveCash());
 
             saveRefund(refundticket, m_ticket);
+            showTicket(refundticket);
 //            m_panelticketedit.setActiveTicket(refundticket, null);
         } catch (BasicException ex) {
             Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
@@ -482,6 +483,10 @@ public class JTicketsBagTicket extends JTicketsBag {
         saveRefundDetail(refund);
         saveRefundPayment(refund);
         saveRefundTaxes(refund);
+    }
+
+    private void showTicket(TicketInfo refund) {
+        readTicket(refund.getTicketId(), refund.getTicketType());
     }
 
     private void saveRefundMaster(TicketInfo refund, TicketInfo ticket) {
@@ -586,8 +591,9 @@ public class JTicketsBagTicket extends JTicketsBag {
                                 + "(ID, "
                                 + "RECEIPT, "
                                 + "PAYMENT, "
-                                + "TOTAL) "
-                                + "VALUES(?, ?, ?, ?)");
+                                + "TOTAL, "
+                                + "RETURNMSG) "
+                                + "VALUES(?, ?, ?, ?, ?)");
 
                 preparedStatementPayment.setString(1, UUID.randomUUID().toString());
                 preparedStatementPayment.setString(2, refund.getId());
@@ -601,11 +607,14 @@ public class JTicketsBagTicket extends JTicketsBag {
                 }
 
                 preparedStatementPayment.setDouble(4, (p.getTotal() * (-1)));
+                preparedStatementPayment.setBytes(5, (byte[]) Formats.BYTEA.parseValue(refund.getReturnMessage()));
                 preparedStatementPayment.execute();
 
             }
             connect.close();
         } catch (SQLException ex) {
+            Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BasicException ex) {
             Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
