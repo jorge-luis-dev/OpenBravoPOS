@@ -36,6 +36,9 @@ import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.panels.JTicketsFinder;
 import com.openbravo.pos.ticket.FindTicketsInfo;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -496,7 +499,7 @@ public class JTicketsBagTicket extends JTicketsBag {
             preparedStatementRefund.setString(2, ticket.getId());
             preparedStatementRefund.execute();
 
-            saveDetail(refund);
+            saveRefundDetail(refund);
 
             connect.close();
         } catch (SQLException ex) {
@@ -504,14 +507,47 @@ public class JTicketsBagTicket extends JTicketsBag {
         }
     }
 
-    private void saveDetail(TicketInfo refund) {
-        for (int i = 0; i < refund.getLinesCount(); i++) {
-            TicketLineInfo newline = new TicketLineInfo(refund.getLine(i));
-            System.out.println(newline.getProductID() + " " + 
-                    newline.getProductName() + " " + 
-                    newline.getMultiply() + " " + 
-                    newline.getPrice() + " " +
-                    newline.getTaxInfo().getId());
+    private void saveRefundDetail(TicketInfo refund) {
+        try {
+            Connection connect = m_App.getSession().getConnection();
+            for (int i = 0; i < refund.getLinesCount(); i++) {
+                TicketLineInfo detail = new TicketLineInfo(refund.getLine(i));
+                PreparedStatement preparedStatementDetail = connect.
+                        prepareStatement("INSERT INTO TICKETLINES "
+                                + "(TICKET, "
+                                + "LINE, "
+                                + "PRODUCT, "
+                                + "UNITS, "
+                                + "PRICE, "
+                                + "TAXID,"
+                                + "ATTRIBUTES) "
+                                + "VALUES(?, ?, ?, ?, ?, ?, ?)");
+
+                preparedStatementDetail.setString(1, refund.getId());
+                preparedStatementDetail.setInt(2, i);
+                preparedStatementDetail.setString(3, detail.getProductID());
+                preparedStatementDetail.setDouble(4, detail.getMultiply() * (-1));
+                preparedStatementDetail.setDouble(5, detail.getPrice());
+                preparedStatementDetail.setString(6, detail.getTaxInfo().getId());
+                try {
+                    ByteArrayOutputStream o = new ByteArrayOutputStream();
+                    detail.getProperties().storeToXML(o, AppLocal.APP_NAME, "UTF-8");
+                    preparedStatementDetail.setBytes(7, o.toByteArray());
+                } catch (IOException e) {
+                    preparedStatementDetail.setBytes(7, null);
+                }
+                preparedStatementDetail.execute();
+
+                System.out.println(detail.getProductID() + " "
+                        + detail.getProductName() + " "
+                        + detail.getMultiply() + " "
+                        + detail.getPrice() + " "
+                        + detail.getTaxInfo().getId() + " "
+                        + detail.getProperties());
+            }
+            connect.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
