@@ -29,13 +29,18 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.printer.*;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.JMessageDialog;
+import com.openbravo.data.loader.SentenceList;
 import com.openbravo.pos.customers.DataLogicCustomers;
+import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.scripting.ScriptEngine;
 import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.panels.JTicketsFinder;
+import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.ticket.FindTicketsInfo;
+import com.openbravo.pos.ticket.TaxInfo;
+import com.openbravo.pos.ticket.TicketTaxInfo;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
@@ -45,6 +50,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -418,6 +424,15 @@ public class JTicketsBagTicket extends JTicketsBag {
      */
     private void m_jRefundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jRefundActionPerformed
         try {
+            if (!verifyRefund(m_ticket.getId())) {
+                String refund = getRefund(m_ticket.getId());
+                JOptionPane.showMessageDialog(this,
+                        "El comprobante ya está registrado en la devolución "
+                        + refund,
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             java.util.List aRefundLines = new ArrayList();
 
             for (int i = 0; i < m_ticket.getLinesCount(); i++) {
@@ -436,31 +451,44 @@ public class JTicketsBagTicket extends JTicketsBag {
             refundticket.setPayments(m_ticket.getPayments());
             refundticket.setLines(aRefundLines);
 
+            TaxesLogic taxeslogic;
+            DataLogicSales dlSales;
+            dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSales");
+            SentenceList senttax;
+            senttax = dlSales.getTaxList();
+            java.util.List<TaxInfo> taxlist = senttax.list();
+            taxeslogic = new TaxesLogic(taxlist);
+
+            taxeslogic.calculateTaxes(m_ticket);
+
+            refundticket.setTaxes(m_ticket.getTaxes());
+
             System.out.println("Refund Cliente" + refundticket.getCustomerId());
             System.out.println(refundticket.getDate());
             System.out.println(m_ticket.getId());
             System.out.println("Money " + m_ticket.getActiveCash());
 
-            if (!verifyRefund(m_ticket.getId())) {
-                JOptionPane.showMessageDialog(this,
-                        "El comprobante ya está registrado en una devolución",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
             saveRefund(refundticket, m_ticket);
 //            m_panelticketedit.setActiveTicket(refundticket, null);
         } catch (BasicException ex) {
             Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TaxesException ex) {
+            Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_m_jRefundActionPerformed
 
     private void saveRefund(TicketInfo refund, TicketInfo ticket) {
+        saveRefundMaster(refund, ticket);
+        saveRefundDetail(refund);
+        saveRefundPayment(refund);
+        saveRefundTaxes(refund);
+    }
+
+    private void saveRefundMaster(TicketInfo refund, TicketInfo ticket) {
         try {
             Connection connect = m_App.getSession().getConnection();
 
+            //Funciona solo para MySQL
             PreparedStatement preparedStatementReceipt = connect.
                     prepareStatement("INSERT INTO RECEIPTS "
                             + "(ID, "
@@ -497,8 +525,6 @@ public class JTicketsBagTicket extends JTicketsBag {
             preparedStatementRefund.setString(1, refund.getId());
             preparedStatementRefund.setString(2, ticket.getId());
             preparedStatementRefund.execute();
-
-            saveRefundDetail(refund);
 
             connect.close();
         } catch (SQLException ex) {
@@ -551,6 +577,67 @@ public class JTicketsBagTicket extends JTicketsBag {
         }
     }
 
+    private void saveRefundPayment(TicketInfo refund) {
+        try {
+            Connection connect = m_App.getSession().getConnection();
+            for (PaymentInfo p : refund.getPayments()) {
+                PreparedStatement preparedStatementPayment = connect.
+                        prepareStatement("INSERT INTO PAYMENTS "
+                                + "(ID, "
+                                + "RECEIPT, "
+                                + "PAYMENT, "
+                                + "TOTAL) "
+                                + "VALUES(?, ?, ?, ?)");
+
+                preparedStatementPayment.setString(1, UUID.randomUUID().toString());
+                preparedStatementPayment.setString(2, refund.getId());
+
+                if (p.getName().equals("cash")) {
+                    preparedStatementPayment.setString(3, "cashrefund");
+                } else if (p.getName().equals("cheque")) {
+                    preparedStatementPayment.setString(3, "chequerefund");
+                } else {
+                    preparedStatementPayment.setString(3, "cashrefund");
+                }
+
+                preparedStatementPayment.setDouble(4, (p.getTotal() * (-1)));
+                preparedStatementPayment.execute();
+
+            }
+            connect.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void saveRefundTaxes(TicketInfo refund) {
+        try {
+            Connection connect = m_App.getSession().getConnection();
+            for (TicketTaxInfo tax : refund.getTaxes()) {
+                PreparedStatement preparedStatementTax = connect.
+                        prepareStatement("INSERT INTO TAXLINES "
+                                + "(ID, "
+                                + "RECEIPT, "
+                                + "TAXID, "
+                                + "BASE, "
+                                + "AMOUNT) "
+                                + "VALUES(?, ?, ?, ?, ?)");
+
+                preparedStatementTax.setString(1, UUID.randomUUID().toString());
+                preparedStatementTax.setString(2, refund.getId());
+                preparedStatementTax.setString(3, tax.getTaxInfo().getId());
+                preparedStatementTax.setDouble(4, (tax.getSubTotal() * (-1)));
+                preparedStatementTax.setDouble(5, (tax.getTax() * (-1)));
+                preparedStatementTax.execute();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /*
+    Retorna la secuencia de las devoluciones
+     */
     public final Integer getNextTicketRefundIndex() throws BasicException {
         return (Integer) m_App.getSession().DB.getSequenceSentence(m_App.getSession(), "TICKETSNUM_REFUND").find();
     }
@@ -590,8 +677,9 @@ public class JTicketsBagTicket extends JTicketsBag {
         try {
             Connection connect = m_App.getSession().getConnection();
             PreparedStatement preparedStatement = connect.
-                    prepareStatement("SELECT id "
-                            + "from REFUNDS where ticket = ?");
+                    prepareStatement("select t.TICKETID as id from REFUNDS r "
+                            + "join TICKETS t "
+                            + "on r.id = t.id where r.ticket = ?");
             preparedStatement.setString(1, ticketId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
