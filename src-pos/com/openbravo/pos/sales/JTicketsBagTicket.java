@@ -414,10 +414,9 @@ public class JTicketsBagTicket extends JTicketsBag {
 
     }//GEN-LAST:event_m_jPrintActionPerformed
     /*
-    Devolver una factura
+    Devolución de una factura
      */
     private void m_jRefundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jRefundActionPerformed
-
         try {
             java.util.List aRefundLines = new ArrayList();
 
@@ -503,7 +502,8 @@ public class JTicketsBagTicket extends JTicketsBag {
 
             connect.close();
         } catch (SQLException ex) {
-            Logger.getLogger(JTicketsBagTicket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JTicketsBagTicket.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
