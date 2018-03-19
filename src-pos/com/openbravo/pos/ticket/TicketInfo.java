@@ -18,6 +18,7 @@
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 package com.openbravo.pos.ticket;
 
+import com.ideas.qubits.Modulo11;
 import java.util.*;
 import java.io.*;
 import java.text.DateFormat;
@@ -63,9 +64,13 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private String nombreComercial;
     private String direccion1;
     private String direccion2;
-    private String serie;
+    private String establecimiento;
+    private String puntoEmision;
+    private String ambiente;
 
-    /** Creates new TicketModel */
+    /**
+     * Creates new TicketModel
+     */
     public TicketInfo() {
         m_sId = UUID.randomUUID().toString();
         tickettype = RECEIPT_NORMAL;
@@ -153,7 +158,6 @@ public class TicketInfo implements SerializableRead, Externalizable {
         }
 
         // taxes are not copied, must be calculated again.
-
         return t;
     }
 
@@ -175,7 +179,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
     public void setTicketId(int iTicketId) {
         m_iTicketId = iTicketId;
-    // refreshLines();
+        // refreshLines();
     }
 
     public String getName(Object info) {
@@ -196,7 +200,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         } else {
             name.append(info.toString());
         }
-        
+
         return name.toString();
     }
 
@@ -235,17 +239,17 @@ public class TicketInfo implements SerializableRead, Externalizable {
             return m_Customer.getId();
         }
     }
-    
-    public String getTransactionID(){
-        return (getPayments().size()>0)
-            ? ( getPayments().get(getPayments().size()-1) ).getTransactionID()
-            : StringUtils.getCardNumber(); //random transaction ID
+
+    public String getTransactionID() {
+        return (getPayments().size() > 0)
+                ? (getPayments().get(getPayments().size() - 1)).getTransactionID()
+                : StringUtils.getCardNumber(); //random transaction ID
     }
-    
-    public String getReturnMessage(){
-        return ( (getPayments().get(getPayments().size()-1)) instanceof PaymentInfoMagcard )
-            ? ((PaymentInfoMagcard)(getPayments().get(getPayments().size()-1))).getReturnMessage()
-            : LocalRes.getIntString("button.ok");
+
+    public String getReturnMessage() {
+        return ((getPayments().get(getPayments().size() - 1)) instanceof PaymentInfoMagcard)
+                ? ((PaymentInfoMagcard) (getPayments().get(getPayments().size() - 1))).getReturnMessage()
+                : LocalRes.getIntString("button.ok");
     }
 
     public void setActiveCash(String value) {
@@ -306,7 +310,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public int getLinesCount() {
         return m_aLines.size();
     }
-    
+
     public double getArticlesCount() {
         double dArticles = 0.0;
         TicketLineInfo oLine;
@@ -343,7 +347,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
 
     public double getTotal() {
-        
+
         return getSubTotal() + getTax();
     }
 
@@ -433,7 +437,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public void setRuc(String ruc) {
         this.ruc = ruc;
     }
-    
+
     public String getRazonSocial() {
         return razonSocial;
     }
@@ -465,18 +469,30 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public void setDireccion2(String direccion2) {
         this.direccion2 = direccion2;
     }
-    
-    
 
-    public String getSerie() {
-        return serie;
+    public String getEstablecimiento() {
+        return establecimiento;
     }
 
-    public void setSerie(String serie) {
-        this.serie = serie;
+    public void setEstablecimiento(String establecimiento) {
+        this.establecimiento = establecimiento;
     }
-    
-    
+
+    public String getPuntoEmision() {
+        return puntoEmision;
+    }
+
+    public void setPuntoEmision(String puntoEmision) {
+        this.puntoEmision = puntoEmision;
+    }
+
+    public String getAmbiente() {
+        return ambiente;
+    }
+
+    public void setAmbiente(String ambiente) {
+        this.ambiente = ambiente;
+    }
 
     public String printId() {
         if (m_iTicketId > 0) {
@@ -486,14 +502,22 @@ public class TicketInfo implements SerializableRead, Externalizable {
             return "";
         }
     }
-    
+
     public String printSecuencial() {
         if (m_iTicketId > 0) {
             // valid ticket id
-            return "001-101-" + String.format("%09d", m_iTicketId);
+            return getEstablecimiento()
+                    + "-"
+                    + getPuntoEmision()
+                    + "-"
+                    + String.format("%09d", m_iTicketId);
         } else {
             return "";
         }
+    }
+
+    public String getSecuencial() {
+        return String.format("%09d", m_iTicketId);
     }
 
     public String printDate() {
@@ -527,5 +551,26 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public String printTotalPaid() {
         return Formats.CURRENCY.formatValue(new Double(getTotalPaid()));
     }
-    
+
+    public String printClaveAcceso() {
+        String codigoDocumeto = "";
+        String claveAcceso = "";
+        Modulo11 m11 = new Modulo11();
+
+        if (getTicketType() == 0) {
+            codigoDocumeto = "01";
+        } else if (getTicketType() == 1) {
+            codigoDocumeto = "04";
+        }
+
+        claveAcceso = new SimpleDateFormat("ddMMyyyy").format(getDate());
+        claveAcceso = claveAcceso + codigoDocumeto;
+        claveAcceso = claveAcceso + getRuc() + getAmbiente();
+        claveAcceso = claveAcceso + getEstablecimiento() + getPuntoEmision() + getSecuencial();
+        claveAcceso = claveAcceso + "12345678" + "1";
+        claveAcceso = claveAcceso + m11.modulo11(claveAcceso);
+
+        return claveAcceso;
+    }
+
 }

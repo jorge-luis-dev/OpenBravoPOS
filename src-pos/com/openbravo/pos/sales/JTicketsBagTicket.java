@@ -179,10 +179,13 @@ public class JTicketsBagTicket extends JTicketsBag {
                 msg.show(this);
             } else {
                 ticket.setRuc(m_dlSystem.getResourceAsText("Empresa.RUC"));
+                ticket.setEstablecimiento(m_dlSystem.getResourceAsText("Empresa.Establecimiento"));
+                ticket.setPuntoEmision(m_dlSystem.getResourceAsText("Empresa.PuntoEmision"));
                 ticket.setRazonSocial(m_dlSystem.getResourceAsText("Empresa.RazonSocial"));
                 ticket.setNombreComercial(m_dlSystem.getResourceAsText("Empresa.NombreComercial"));
                 ticket.setDireccion1(m_dlSystem.getResourceAsText("Empresa.Direccion1"));
                 ticket.setDireccion2(m_dlSystem.getResourceAsText("Empresa.Direccion2"));
+                ticket.setAmbiente(m_dlSystem.getResourceAsText("Empresa.Ambiente"));
                 
                 m_ticket = ticket;
                 m_ticketCopy = null; // se asigna al pulsar el boton de editar o devolver
