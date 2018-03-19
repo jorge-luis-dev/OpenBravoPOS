@@ -572,9 +572,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         com.openbravo.editor.JEditorString m_jtxtTax = new JEditorString();
         m_jtxtTax.setText(documento);
-        
+
         finder.setM_jtxtTaxID(m_jtxtTax);
-                
+
         finder.executeSearchDirecto();
         c = finder.getSelectedCustomer();
         if (c == null) {
@@ -943,6 +943,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             }
 
                             executeEvent(ticket, ticketext, "ticket.close", new ScriptArg("print", paymentdialog.isPrintSelected()));
+
+                            ticket.setRuc(dlSystem.getResourceAsText("Empresa.RUC"));
+                            ticket.setRazonSocial(dlSystem.getResourceAsText("Empresa.RazonSocial"));
+                            ticket.setNombreComercial(dlSystem.getResourceAsText("Empresa.NombreComercial"));
+                            ticket.setDireccion1(dlSystem.getResourceAsText("Empresa.Direccion1"));
+                            ticket.setDireccion2(dlSystem.getResourceAsText("Empresa.Direccion2"));
 
                             // Print receipt.
                             printTicket(paymentdialog.isPrintSelected()

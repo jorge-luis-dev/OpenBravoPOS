@@ -58,6 +58,12 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private List<PaymentInfo> payments;
     private List<TicketTaxInfo> taxes;
     private String m_sResponse;
+    private String ruc;
+    private String razonSocial;
+    private String nombreComercial;
+    private String direccion1;
+    private String direccion2;
+    private String serie;
 
     /** Creates new TicketModel */
     public TicketInfo() {
@@ -420,10 +426,71 @@ public class TicketInfo implements SerializableRead, Externalizable {
         return avalues.toArray(new TicketTaxInfo[avalues.size()]);
     }
 
+    public String getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
+    
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public String getNombreComercial() {
+        return nombreComercial;
+    }
+
+    public void setNombreComercial(String nombreComercial) {
+        this.nombreComercial = nombreComercial;
+    }
+
+    public String getDireccion1() {
+        return direccion1;
+    }
+
+    public void setDireccion1(String direccion) {
+        this.direccion1 = direccion;
+    }
+
+    public String getDireccion2() {
+        return direccion2;
+    }
+
+    public void setDireccion2(String direccion2) {
+        this.direccion2 = direccion2;
+    }
+    
+    
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+    
+    
+
     public String printId() {
         if (m_iTicketId > 0) {
             // valid ticket id
             return Formats.INT.formatValue(new Integer(m_iTicketId));
+        } else {
+            return "";
+        }
+    }
+    
+    public String printSecuencial() {
+        if (m_iTicketId > 0) {
+            // valid ticket id
+            return "001-101-" + String.format("%09d", m_iTicketId);
         } else {
             return "";
         }
@@ -460,4 +527,5 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public String printTotalPaid() {
         return Formats.CURRENCY.formatValue(new Double(getTotalPaid()));
     }
+    
 }

@@ -178,6 +178,12 @@ public class JTicketsBagTicket extends JTicketsBag {
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.notexiststicket"));
                 msg.show(this);
             } else {
+                ticket.setRuc(m_dlSystem.getResourceAsText("Empresa.RUC"));
+                ticket.setRazonSocial(m_dlSystem.getResourceAsText("Empresa.RazonSocial"));
+                ticket.setNombreComercial(m_dlSystem.getResourceAsText("Empresa.NombreComercial"));
+                ticket.setDireccion1(m_dlSystem.getResourceAsText("Empresa.Direccion1"));
+                ticket.setDireccion2(m_dlSystem.getResourceAsText("Empresa.Direccion2"));
+                
                 m_ticket = ticket;
                 m_ticketCopy = null; // se asigna al pulsar el boton de editar o devolver
                 printTicket();

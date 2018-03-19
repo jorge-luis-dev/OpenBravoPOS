@@ -1,0 +1,4 @@
+net use LPT1: /delete
+NET USE LPT1: \\DESKTOP-SMMFPSS\tmu220 /PERSISTENT:YES 
+
+pause

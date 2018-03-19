@@ -145,7 +145,7 @@ public class TicketLineInfo implements Serializable {
     public String printPrice() {
         return FormatUtils.formatCurrency(price);
     }
-
+        
     public String printMultiply() {
         return FormatUtils.formatDouble(multiply);
     }
