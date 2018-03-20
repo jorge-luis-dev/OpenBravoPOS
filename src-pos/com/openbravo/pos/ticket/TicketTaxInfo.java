@@ -16,55 +16,67 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
-
 package com.openbravo.pos.ticket;
 
 import com.openbravo.format.Formats;
 
-
 public class TicketTaxInfo {
-    
+
     private TaxInfo tax;
-    
+
     private double subtotal;
     private double taxtotal;
-            
-    /** Creates a new instance of TicketTaxInfo */
+
+    /**
+     * Creates a new instance of TicketTaxInfo
+     */
     public TicketTaxInfo(TaxInfo tax) {
         this.tax = tax;
-        
+
         subtotal = 0.0;
         taxtotal = 0.0;
     }
-    
+
     public TaxInfo getTaxInfo() {
         return tax;
     }
-    
+
     public void add(double dValue) {
         subtotal += dValue;
         taxtotal = subtotal * tax.getRate();
     }
-    
-    public double getSubTotal() {    
+
+    public double getSubTotal() {
         return subtotal;
     }
-    
-    public double getTax() {       
+
+    public double getTax() {
         return taxtotal;
     }
-    
-    public double getTotal() {         
+
+    public double getTotal() {
         return subtotal + taxtotal;
     }
-    
+
     public String printSubTotal() {
-        return Formats.CURRENCY.formatValue(new Double(getSubTotal()));
+        return Formats.CURRENCY.formatValue(new Double(getSubTotal()));        
     }
+
     public String printTax() {
         return Formats.CURRENCY.formatValue(new Double(getTax()));
-    }    
+    }
+
     public String printTotal() {
         return Formats.CURRENCY.formatValue(new Double(getTotal()));
-    }    
+    }
+
+    public String printTaxInfo() {
+        String nombre = tax.toString();
+        if (nombre.equals("IVA 0")) {
+            return "Tarifa 0%";
+        } else if (nombre.equals("IVA 12")) {
+            return "Tarifa 12% (i)";
+        }
+        return "";
+    }
 }

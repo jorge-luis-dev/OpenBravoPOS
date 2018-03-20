@@ -945,10 +945,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             executeEvent(ticket, ticketext, "ticket.close", new ScriptArg("print", paymentdialog.isPrintSelected()));
 
                             ticket.setRuc(dlSystem.getResourceAsText("Empresa.RUC"));
+                            ticket.setEstablecimiento(dlSystem.getResourceAsText("Empresa.Establecimiento"));
+                            ticket.setPuntoEmision(dlSystem.getResourceAsText("Empresa.PuntoEmision"));
                             ticket.setRazonSocial(dlSystem.getResourceAsText("Empresa.RazonSocial"));
                             ticket.setNombreComercial(dlSystem.getResourceAsText("Empresa.NombreComercial"));
                             ticket.setDireccion1(dlSystem.getResourceAsText("Empresa.Direccion1"));
                             ticket.setDireccion2(dlSystem.getResourceAsText("Empresa.Direccion2"));
+                            ticket.setAmbiente(dlSystem.getResourceAsText("Empresa.Ambiente"));
 
                             // Print receipt.
                             printTicket(paymentdialog.isPrintSelected()

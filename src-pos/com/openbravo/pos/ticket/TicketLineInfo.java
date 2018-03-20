@@ -316,4 +316,8 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public String printValue() {
         return Formats.CURRENCY.formatValue(getValue());
     }
+    
+    public String printConIVA() {
+        return tax.getRate() == 0 ? " " : "i";
+    }
 }
