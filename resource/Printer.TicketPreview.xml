@@ -69,7 +69,7 @@
         #end
         #if (${ticket.ticketType} == 1)
         <line>
-            <text align="left" length="40">Nota de Credito: ${ticket.printId()}</text>
+            <text align="left" length="40">Nota de Credito: ${ticket.printSecuencial()}</text>
         </line>
         #end
         <line>
@@ -92,7 +92,7 @@
         <line></line>    
         <line>
             <text align ="left" length="16">Producto</text>
-            <text align ="right" length="10">Precio</text>
+            <text align ="right" length="8">Precio</text>
             <text align ="right" length="5"></text>
             <text align ="right" length="9">Valor</text>
         </line>      
@@ -106,9 +106,10 @@
             #else
                 <text align ="left" length="16">${ticketline.printName()}</text>
             #end
-            <text align ="right" length="10">${ticketline.printPrice()}</text>
+            <text align ="right" length="8">${ticketline.printPrice()}</text>
             <text align ="right" length="5">x${ticketline.printMultiply()}</text>
             <text align ="right" length="9">${ticketline.printSubValue()}</text>
+            <text align ="right" length="2">${ticketline.printConIVA()}</text>
         </line> 
         #if ($ticketline.productAttSetInstId)
         <line>

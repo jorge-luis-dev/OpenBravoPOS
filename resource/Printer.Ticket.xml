@@ -55,6 +55,9 @@
             <text align="center" length="40">CLAVE DE ACCESO:</text>
         </line>   
         <line>
+            <text>${ticket.printClaveAcceso()}</text>
+        </line>        
+        <line>
             <text align="center" length="40">AMBIENTE: PRUEBAS</text>
         </line>     
 	<line>     
@@ -66,7 +69,7 @@
         #end
         #if (${ticket.ticketType} == 1)
         <line>
-            <text align="left" length="40">Nota de Credito: ${ticket.printId()}</text>
+            <text align="left" length="40">Nota de Credito: ${ticket.printSecuencial()}</text>
         </line>
         #end
         <line>
