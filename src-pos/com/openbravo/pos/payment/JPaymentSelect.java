@@ -869,6 +869,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
             this.tipoDocumento = "RUC";
+            txtDocumento.setText("");
+            txtRazonSocial.setText("");
+            txtCorreoElectronico.setText("");
         }
     }//GEN-LAST:event_radioRUCItemStateChanged
 
@@ -893,6 +896,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
             this.tipoDocumento = "Cédula";
+            txtDocumento.setText("");
+            txtRazonSocial.setText("");
+            txtCorreoElectronico.setText("");
         }
     }//GEN-LAST:event_radioCIItemStateChanged
 
@@ -904,6 +910,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
             this.tipoDocumento = "Pasaporte";
+            txtDocumento.setText("");
+            txtRazonSocial.setText("");
+            txtCorreoElectronico.setText("");
         }
     }//GEN-LAST:event_radioPasaporteItemStateChanged
 
