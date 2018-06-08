@@ -786,7 +786,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         try {
             Connection connect = app.getSession().getConnection();
             PreparedStatement preparedStatement = connect.
-                    prepareStatement("select name, email, address from CUSTOMERS "
+                    prepareStatement("select name, email from CUSTOMERS "
                             + "where TAXID = ?");
             preparedStatement.setString(1, cliente);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -795,7 +795,6 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
                 existe = true;
                 txtRazonSocial.setText(resultSet.getString("name"));
                 txtCorreoElectronico.setText(resultSet.getString("email"));
-                txtDireccion.setText(resultSet.getString("address"));
                 break;
             }
             connect.close();

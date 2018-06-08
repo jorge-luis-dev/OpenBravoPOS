@@ -1,3 +1,0 @@
- net use LPT1 /DELETE
- net use LPT1 \\PIZZA_WIN10\TMU220 /PERSISTENT:YES
- pause
