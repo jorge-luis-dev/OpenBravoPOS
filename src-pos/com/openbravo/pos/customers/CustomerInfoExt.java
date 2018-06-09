@@ -184,6 +184,8 @@ public class CustomerInfoExt extends CustomerInfo {
     }
 
     public String getAddress() {
+        if (address == null)
+            return "";
         return address;
     }
 
