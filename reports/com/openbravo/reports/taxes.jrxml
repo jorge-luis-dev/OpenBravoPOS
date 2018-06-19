@@ -8,9 +8,14 @@
 	<parameter name="ARG" class="java.lang.Object" isForPrompting="false"/>
 	<field name="TAXID" class="java.lang.String"/>
 	<field name="TAXNAME" class="java.lang.String"/>
-	<field name="TOTALTAXES" class="java.lang.Double"/>
+	<field name="TOTALBASES" class="java.lang.Double"/>
+        <field name="TOTALTAXES" class="java.lang.Double"/>
 	<variable name="BIGTOTALTAXES" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTALTAXES}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
+        <variable name="BIGTOTALBASES" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALBASES}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<background>
@@ -108,6 +113,19 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{label.taxname}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-14" mode="Opaque" x="250" y="10" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="Dialog" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{label.base}]]></textFieldExpression>
+			</textField>
+                        <textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-14" mode="Opaque" x="399" y="10" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -142,6 +160,19 @@
 					<font fontName="Dialog" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{TAXNAME}]]></textFieldExpression>
+			</textField>
+                        <textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-4" mode="Opaque" x="250" y="0" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="Dialog" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue($F{TOTALBASES})]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-3" mode="Opaque" x="399" y="0" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -218,6 +249,19 @@
 	</pageFooter>
 	<summary>
 		<band height="60">
+                        <textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-7" mode="Opaque" x="255" y="10" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="Dialog" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue($V{BIGTOTALBASES})]]></textFieldExpression>
+			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-5" mode="Opaque" x="399" y="10" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
