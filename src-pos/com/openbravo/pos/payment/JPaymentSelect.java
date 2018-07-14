@@ -635,6 +635,11 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         txtDireccion.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
         txtDireccion.setText("Ibarra");
         txtDireccion.setPreferredSize(new java.awt.Dimension(260, 40));
+        txtDireccion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDireccionFocusGained(evt);
+            }
+        });
         jPanel7.add(txtDireccion);
 
         jPanel3.add(jPanel7, java.awt.BorderLayout.PAGE_END);
@@ -730,7 +735,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         if (!getCliente(txtDocumento.getText())) {
             saveCliente();
         }
-        
+
         this.documento = txtDocumento.getText();
 
         PaymentInfo returnPayment = ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).executePayment();
@@ -870,9 +875,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
             this.tipoDocumento = "RUC";
-            txtDocumento.setText("");
-            txtRazonSocial.setText("");
-            txtCorreoElectronico.setText("");
+            cleanWhenConsumidorFinal();
         }
     }//GEN-LAST:event_radioRUCItemStateChanged
 
@@ -897,9 +900,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
             this.tipoDocumento = "Cédula";
-            txtDocumento.setText("");
-            txtRazonSocial.setText("");
-            txtCorreoElectronico.setText("");
+            cleanWhenConsumidorFinal();
         }
     }//GEN-LAST:event_radioCIItemStateChanged
 
@@ -911,13 +912,21 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             txtCorreoElectronico.setEditable(true);
             txtDireccion.setEditable(true);
             this.tipoDocumento = "Pasaporte";
-            txtDocumento.setText("");
-            txtRazonSocial.setText("");
-            txtCorreoElectronico.setText("");
+            cleanWhenConsumidorFinal();
         }
     }//GEN-LAST:event_radioPasaporteItemStateChanged
 
+    private void cleanWhenConsumidorFinal() {
+        if (txtDocumento.getText().equals("9999999999999")) {
+            txtDocumento.setText("");
+        }
+        if (txtRazonSocial.getText().equals("Consumidor Final")) {
+            txtRazonSocial.setText("");
+        }
+    }
+
     private void txtRazonSocialFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRazonSocialFocusGained
+        
         txtRazonSocial.selectAll();
     }//GEN-LAST:event_txtRazonSocialFocusGained
 
@@ -929,7 +938,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             return;
         }
         if (!getCliente(txtDocumento.getText())) {
-            txtRazonSocial.setText("");
+            txtRazonSocial.requestFocus();
         }
         txtRazonSocial.requestFocus();
     }//GEN-LAST:event_txtDocumentoActionPerformed
@@ -944,6 +953,10 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private void txtCorreoElectronicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoElectronicoActionPerformed
         txtDireccion.requestFocus();
     }//GEN-LAST:event_txtCorreoElectronicoActionPerformed
+
+    private void txtDireccionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDireccionFocusGained
+        txtDireccion.selectAll();
+    }//GEN-LAST:event_txtDireccionFocusGained
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup grupoDocumento;
