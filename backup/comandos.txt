@@ -1,5 +1,5 @@
 - Generar los respaldos incluidos los procedimientos:
-mysqldump --routines -u root -p openbravo > openbravo20180318.sql
+mysqldump --routines -u root -p openbravo > openbravo.dump
 
 - Restaurar el respaldo
-mysql -u root -p openbravoback < openbravo20180318.sql
+mysql -u root -p openbravo < openbravo.dump

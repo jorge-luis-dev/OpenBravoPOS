@@ -1,0 +1,917 @@
+-- MySQL dump 10.13  Distrib 5.7.23, for Linux (x86_64)
+--
+-- Host: localhost    Database: quijotelui
+-- ------------------------------------------------------
+-- Server version	5.7.23-0ubuntu0.18.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `ele_documentos_electronicos`
+--
+
+DROP TABLE IF EXISTS `ele_documentos_electronicos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ele_documentos_electronicos` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(20) NOT NULL,
+  `numero` varchar(20) NOT NULL,
+  `numero_autorizacion` varchar(100) DEFAULT NULL,
+  `fecha_autorizacion` datetime DEFAULT NULL,
+  `observacion` varchar(4000) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1036 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ele_documentos_electronicos`
+--
+
+LOCK TABLES `ele_documentos_electronicos` WRITE;
+/*!40000 ALTER TABLE `ele_documentos_electronicos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ele_documentos_electronicos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ele_parametros`
+--
+
+DROP TABLE IF EXISTS `ele_parametros`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ele_parametros` (
+  `id` bigint(20) NOT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `valor` varchar(255) DEFAULT NULL,
+  `observacion` varchar(255) DEFAULT NULL,
+  `estado` varchar(255) DEFAULT NULL,
+  `tipo` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ele_parametros`
+--
+
+LOCK TABLES `ele_parametros` WRITE;
+/*!40000 ALTER TABLE `ele_parametros` DISABLE KEYS */;
+INSERT INTO `ele_parametros` VALUES (1,'Ambiente','Pruebas','El código que conformará el tipo de ambiente según la clave de acceso: Pruebas = 1, Producción = 2','Activo','SRI'),(2,'Emisión','Normal','El código que conformará el tipo de emisión según la clave de acceso: Emisión Normal = 1','Activo','SRI'),(3,'Generado','D:\\QuijoteLui\\app\\comprobante\\generado','La ubicación donde se genera el archivo XML','Activo','SRI'),(4,'Firmado','D:\\QuijoteLui\\app\\comprobante\\firmado','La ubicación donde se genera el archivo XML firmado electrónicamente','Activo','SRI'),(5,'Enviado','D:\\QuijoteLui\\app\\comprobante\\enviado','La ubicación donde se copia el archivo XML enviado','Activo','SRI'),(6,'Autorizado','D:\\QuijoteLui\\app\\comprobante\\autorizado','La ubicación donde se genera el archivo XML autorizado','Activo','SRI'),(7,'NoAutorizado','D:\\QuijoteLui\\app\\comprobante\\noAutorizado','La ubicación donde se genera el archivo XML no autorizado','Activo','SRI'),(8,'Rechazado','D:\\QuijoteLui\\app\\comprobante\\rechazado','La ubicación donde se genera el archivo XML rechazado','Activo','SRI'),(9,'PDF','D:\\QuijoteLui\\app\\comprobante\\pdf','La ubicación donde se genera el archivo PDF','Activo','SRI'),(10,'Firma Electrónica','D:\\QuijoteLui\\bce\\firma\\IdeasEnBinario.p12','Es la ubicación del archivo de la firma electrónica','Activo','CERTIFICADO'),(11,'Clave Firma Electrónica','****','Es la contraseña de la firma electrónica','Activo','CERTIFICADO'),(12,'Web Service Recepción','https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl','Servicio Web del SRI para la recepción de comprobantes electrónicos','Activo','SRI'),(13,'Web Service Autorización','https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl','Servicio Web del SRI para la autorización de comprobantes electrónicos','Activo','SRI'),(14,'Logo','D:\\QuijoteLui\\app\\logo\\logo.jpg','Es la ubicación del archivo JPEG del logotipo','Activo','SRI'),(15,'Reportes','D:\\QuijoteLui\\app\\reportes','Es la ubicación de los archivos de reportes','Activo','SRI'),(16,'Servidor Correo','smtp.googlemail.com','Es la dirección del servidor de correo','Activo','CORREO'),(17,'Puerto Servidor Correo','465','Es el número de puerto del servidor de correo','Activo','CORREO'),(18,'Correo','allku.expert@gmail.com','Es la dirección de correo electrónico','Activo','CORREO'),(19,'Clave Correo','****','Es la clave de la dirección de correo electrónico','Activo','CORREO'),(20,'Suscripción','****','Suscripción','Activo','SUSCRIPCIÓN'),(21,'Correo de cuenta','allku.expert@gmail.com','Suscripción','Activo','SUSCRIPCIÓN'),(22,'Clave de cuenta','****','Suscripción','Activo','SUSCRIPCIÓN'),(23,'Organización','Ideas en Binario','Suscripción','Activo','SUSCRIPCIÓN');
+/*!40000 ALTER TABLE `ele_parametros` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ele_truncados`
+--
+
+DROP TABLE IF EXISTS `ele_truncados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ele_truncados` (
+  `id` bigint(20) NOT NULL,
+  `codigo` varchar(255) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `numero` varchar(255) DEFAULT NULL,
+  `observacion` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ele_truncados`
+--
+
+LOCK TABLES `ele_truncados` WRITE;
+/*!40000 ALTER TABLE `ele_truncados` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ele_truncados` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `v_ele_contribuyentes`
+--
+
+DROP TABLE IF EXISTS `v_ele_contribuyentes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `v_ele_contribuyentes` (
+  `id` bigint(20) NOT NULL,
+  `razon_social` varchar(255) DEFAULT NULL,
+  `nombre_comercial` varchar(255) DEFAULT NULL,
+  `ruc` varchar(255) DEFAULT NULL,
+  `contribuyente_especial` varchar(255) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `obligado_contabilidad` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `v_ele_contribuyentes`
+--
+
+LOCK TABLES `v_ele_contribuyentes` WRITE;
+/*!40000 ALTER TABLE `v_ele_contribuyentes` DISABLE KEYS */;
+INSERT INTO `v_ele_contribuyentes` VALUES (1,'IDEAS EN BINARIO','IDEAS EN BINARIO','9999999999999',NULL,'Cananvalle','NO');
+/*!40000 ALTER TABLE `v_ele_contribuyentes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `v_ele_facturas`
+--
+
+DROP TABLE IF EXISTS `v_ele_facturas`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_facturas`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_facturas` AS SELECT 
+ 1 AS `id`,
+ 1 AS `id_contribuyente`,
+ 1 AS `codigo`,
+ 1 AS `numero`,
+ 1 AS `codigo_documento`,
+ 1 AS `establecimiento`,
+ 1 AS `punto_emision`,
+ 1 AS `secuencial`,
+ 1 AS `fecha`,
+ 1 AS `total_sin_iva`,
+ 1 AS `total_con_iva`,
+ 1 AS `iva`,
+ 1 AS `descuentos`,
+ 1 AS `total`,
+ 1 AS `tipo_documento`,
+ 1 AS `documento`,
+ 1 AS `razon_social`,
+ 1 AS `direccion`,
+ 1 AS `guia_remision`,
+ 1 AS `direccion_establecimiento`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `v_ele_facturas_detalle`
+--
+
+DROP TABLE IF EXISTS `v_ele_facturas_detalle`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_facturas_detalle`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_facturas_detalle` AS SELECT 
+ 1 AS `id`,
+ 1 AS `codigo`,
+ 1 AS `numero`,
+ 1 AS `codigo_principal`,
+ 1 AS `descripcion`,
+ 1 AS `cantidad`,
+ 1 AS `precio_unitario`,
+ 1 AS `codigo_porcentaje`,
+ 1 AS `porcentaje_iva`,
+ 1 AS `valor_iva`,
+ 1 AS `descuento`,
+ 1 AS `precio_total_sin_impuesto`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `v_ele_guias`
+--
+
+DROP TABLE IF EXISTS `v_ele_guias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `v_ele_guias` (
+  `id` bigint(20) NOT NULL,
+  `codigo` varchar(255) DEFAULT NULL,
+  `codigo_documento` varchar(255) DEFAULT NULL,
+  `direccion_establecimiento` varchar(255) DEFAULT NULL,
+  `direccion_partida` varchar(255) DEFAULT NULL,
+  `documento` varchar(255) DEFAULT NULL,
+  `establecimiento` varchar(255) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `id_contribuyente` bigint(20) DEFAULT NULL,
+  `numero` varchar(255) DEFAULT NULL,
+  `placa` varchar(255) DEFAULT NULL,
+  `punto_emision` varchar(255) DEFAULT NULL,
+  `razon_social_transportista` varchar(255) DEFAULT NULL,
+  `secuencial` varchar(255) DEFAULT NULL,
+  `tipo_documento` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `v_ele_guias`
+--
+
+LOCK TABLES `v_ele_guias` WRITE;
+/*!40000 ALTER TABLE `v_ele_guias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `v_ele_guias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `v_ele_guias_receptor`
+--
+
+DROP TABLE IF EXISTS `v_ele_guias_receptor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `v_ele_guias_receptor` (
+  `id` bigint(20) NOT NULL,
+  `codigo` varchar(255) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `documento` varchar(255) DEFAULT NULL,
+  `motivo_traslado` varchar(255) DEFAULT NULL,
+  `numero` varchar(255) DEFAULT NULL,
+  `razon_social` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `v_ele_guias_receptor`
+--
+
+LOCK TABLES `v_ele_guias_receptor` WRITE;
+/*!40000 ALTER TABLE `v_ele_guias_receptor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `v_ele_guias_receptor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `v_ele_guias_receptor_detalle`
+--
+
+DROP TABLE IF EXISTS `v_ele_guias_receptor_detalle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `v_ele_guias_receptor_detalle` (
+  `id` bigint(20) NOT NULL,
+  `cantidad` decimal(19,2) DEFAULT NULL,
+  `codigo` varchar(255) DEFAULT NULL,
+  `codigo_articulo` varchar(255) DEFAULT NULL,
+  `documento` varchar(255) DEFAULT NULL,
+  `nombre_articulo` varchar(255) DEFAULT NULL,
+  `numero` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `v_ele_guias_receptor_detalle`
+--
+
+LOCK TABLES `v_ele_guias_receptor_detalle` WRITE;
+/*!40000 ALTER TABLE `v_ele_guias_receptor_detalle` DISABLE KEYS */;
+/*!40000 ALTER TABLE `v_ele_guias_receptor_detalle` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `v_ele_impuestos`
+--
+
+DROP TABLE IF EXISTS `v_ele_impuestos`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_impuestos`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_impuestos` AS SELECT 
+ 1 AS `id`,
+ 1 AS `codigo`,
+ 1 AS `numero`,
+ 1 AS `codigo_impuesto`,
+ 1 AS `codigo_porcentaje`,
+ 1 AS `base_imponible`,
+ 1 AS `tarifa`,
+ 1 AS `valor`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `v_ele_informaciones`
+--
+
+DROP TABLE IF EXISTS `v_ele_informaciones`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_informaciones`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_informaciones` AS SELECT 
+ 1 AS `id`,
+ 1 AS `documento`,
+ 1 AS `nombre`,
+ 1 AS `valor`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `v_ele_notas_credito`
+--
+
+DROP TABLE IF EXISTS `v_ele_notas_credito`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_notas_credito`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_notas_credito` AS SELECT 
+ 1 AS `id`,
+ 1 AS `id_contribuyente`,
+ 1 AS `codigo`,
+ 1 AS `numero`,
+ 1 AS `codigo_documento`,
+ 1 AS `establecimiento`,
+ 1 AS `punto_emision`,
+ 1 AS `secuencial`,
+ 1 AS `fecha`,
+ 1 AS `tipo_documento`,
+ 1 AS `documento`,
+ 1 AS `razon_social`,
+ 1 AS `documento_modificado`,
+ 1 AS `modificado`,
+ 1 AS `fecha_modificado`,
+ 1 AS `total_sin_impuestos`,
+ 1 AS `total_modificado`,
+ 1 AS `total_sin_iva`,
+ 1 AS `total_con_iva`,
+ 1 AS `iva`,
+ 1 AS `motivo`,
+ 1 AS `direccion_establecimiento`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `v_ele_notas_credito_detalle`
+--
+
+DROP TABLE IF EXISTS `v_ele_notas_credito_detalle`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_notas_credito_detalle`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_notas_credito_detalle` AS SELECT 
+ 1 AS `id`,
+ 1 AS `codigo`,
+ 1 AS `numero`,
+ 1 AS `codigo_interno`,
+ 1 AS `descripcion`,
+ 1 AS `cantidad`,
+ 1 AS `precio_unitario`,
+ 1 AS `descuento`,
+ 1 AS `precio_total_sin_impuesto`,
+ 1 AS `codigo_porcentaje`,
+ 1 AS `porcentaje_iva`,
+ 1 AS `valor_iva`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `v_ele_pagos`
+--
+
+DROP TABLE IF EXISTS `v_ele_pagos`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_pagos`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_pagos` AS SELECT 
+ 1 AS `id`,
+ 1 AS `codigo`,
+ 1 AS `numero`,
+ 1 AS `forma_pago`,
+ 1 AS `forma_pago_descripcion`,
+ 1 AS `total`,
+ 1 AS `plazo`,
+ 1 AS `tiempo`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `v_ele_reporte_facturas`
+--
+
+DROP TABLE IF EXISTS `v_ele_reporte_facturas`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_reporte_facturas`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_reporte_facturas` AS SELECT 
+ 1 AS `id`,
+ 1 AS `codigo`,
+ 1 AS `numero`,
+ 1 AS `establecimiento`,
+ 1 AS `punto_emision`,
+ 1 AS `secuencial`,
+ 1 AS `fecha`,
+ 1 AS `total_sin_iva`,
+ 1 AS `total_con_iva`,
+ 1 AS `iva`,
+ 1 AS `descuentos`,
+ 1 AS `total`,
+ 1 AS `documento`,
+ 1 AS `razon_social`,
+ 1 AS `correo_electronico`,
+ 1 AS `estado`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `v_ele_reporte_guias`
+--
+
+DROP TABLE IF EXISTS `v_ele_reporte_guias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `v_ele_reporte_guias` (
+  `id` bigint(20) NOT NULL,
+  `codigo` varchar(255) DEFAULT NULL,
+  `documento` varchar(255) DEFAULT NULL,
+  `establecimiento` varchar(255) DEFAULT NULL,
+  `estado` varchar(255) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `numero` varchar(255) DEFAULT NULL,
+  `placa` varchar(255) DEFAULT NULL,
+  `punto_emision` varchar(255) DEFAULT NULL,
+  `razon_social_transportista` varchar(255) DEFAULT NULL,
+  `secuencial` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `v_ele_reporte_guias`
+--
+
+LOCK TABLES `v_ele_reporte_guias` WRITE;
+/*!40000 ALTER TABLE `v_ele_reporte_guias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `v_ele_reporte_guias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `v_ele_reporte_notas_credito`
+--
+
+DROP TABLE IF EXISTS `v_ele_reporte_notas_credito`;
+/*!50001 DROP VIEW IF EXISTS `v_ele_reporte_notas_credito`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `v_ele_reporte_notas_credito` AS SELECT 
+ 1 AS `id`,
+ 1 AS `codigo`,
+ 1 AS `numero`,
+ 1 AS `establecimiento`,
+ 1 AS `punto_emision`,
+ 1 AS `secuencial`,
+ 1 AS `fecha`,
+ 1 AS `documento`,
+ 1 AS `razon_social`,
+ 1 AS `documento_modificado`,
+ 1 AS `total_sin_impuestos`,
+ 1 AS `total_sin_iva`,
+ 1 AS `total_con_iva`,
+ 1 AS `iva`,
+ 1 AS `correo_electronico`,
+ 1 AS `estado`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `v_ele_reporte_retenciones`
+--
+
+DROP TABLE IF EXISTS `v_ele_reporte_retenciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `v_ele_reporte_retenciones` (
+  `id` bigint(20) NOT NULL,
+  `codigo` varchar(255) DEFAULT NULL,
+  `correo_electronico` varchar(255) DEFAULT NULL,
+  `documento` varchar(255) DEFAULT NULL,
+  `establecimiento` varchar(255) DEFAULT NULL,
+  `estado` varchar(255) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `numero` varchar(255) DEFAULT NULL,
+  `punto_emision` varchar(255) DEFAULT NULL,
+  `razon_social` varchar(255) DEFAULT NULL,
+  `secuencial` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `v_ele_reporte_retenciones`
+--
+
+LOCK TABLES `v_ele_reporte_retenciones` WRITE;
+/*!40000 ALTER TABLE `v_ele_reporte_retenciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `v_ele_reporte_retenciones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `v_ele_retenciones`
+--
+
+DROP TABLE IF EXISTS `v_ele_retenciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `v_ele_retenciones` (
+  `id` bigint(20) NOT NULL,
+  `codigo` varchar(255) DEFAULT NULL,
+  `codigo_documento` varchar(255) DEFAULT NULL,
+  `direccion_establecimiento` varchar(255) DEFAULT NULL,
+  `documento` varchar(255) DEFAULT NULL,
+  `establecimiento` varchar(255) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `id_contribuyente` bigint(20) DEFAULT NULL,
+  `numero` varchar(255) DEFAULT NULL,
+  `periodo_fiscal` varchar(255) DEFAULT NULL,
+  `punto_emision` varchar(255) DEFAULT NULL,
+  `razon_social` varchar(255) DEFAULT NULL,
+  `secuencial` varchar(255) DEFAULT NULL,
+  `tipo_documento` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `v_ele_retenciones`
+--
+
+LOCK TABLES `v_ele_retenciones` WRITE;
+/*!40000 ALTER TABLE `v_ele_retenciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `v_ele_retenciones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `v_ele_retenciones_detalle`
+--
+
+DROP TABLE IF EXISTS `v_ele_retenciones_detalle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `v_ele_retenciones_detalle` (
+  `id` bigint(20) NOT NULL,
+  `base_imponible` decimal(19,2) DEFAULT NULL,
+  `codigo` varchar(255) DEFAULT NULL,
+  `codigo_sri` varchar(255) DEFAULT NULL,
+  `fecha_comprobante` varchar(255) DEFAULT NULL,
+  `numero` varchar(255) DEFAULT NULL,
+  `numero_comprobante` varchar(255) DEFAULT NULL,
+  `porcentaje` decimal(19,2) DEFAULT NULL,
+  `tipo` varchar(255) DEFAULT NULL,
+  `tipo_comprobante` varchar(255) DEFAULT NULL,
+  `valor_retenido` decimal(19,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `v_ele_retenciones_detalle`
+--
+
+LOCK TABLES `v_ele_retenciones_detalle` WRITE;
+/*!40000 ALTER TABLE `v_ele_retenciones_detalle` DISABLE KEYS */;
+/*!40000 ALTER TABLE `v_ele_retenciones_detalle` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'quijotelui'
+--
+/*!50003 DROP FUNCTION IF EXISTS `FUN_DIRECCION_ESTABLECIMIENTO` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`quijotelui`@`%` FUNCTION `FUN_DIRECCION_ESTABLECIMIENTO`() RETURNS varchar(100) CHARSET utf8
+BEGIN
+	DECLARE vDireccion varchar(100);
+    
+SELECT 
+    direccion
+INTO vDireccion FROM
+    v_ele_contribuyentes;	
+        
+RETURN vDireccion;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `FUN_ESTABLECIMIENTO` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`quijotelui`@`%` FUNCTION `FUN_ESTABLECIMIENTO`() RETURNS varchar(10) CHARSET utf8
+BEGIN
+	DECLARE establecimiento varchar(10);
+	select valor 
+    into establecimiento
+    from ele_parametros
+	where nombre = 'Establecimiento'
+	and estado = 'Activo';
+    
+RETURN ifnull(establecimiento, '001');
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `FUN_FECHA_MODIFICADO` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`quijotelui`@`%` FUNCTION `FUN_FECHA_MODIFICADO`(pId varchar(255)) RETURNS varchar(20) CHARSET utf8
+BEGIN
+	DECLARE vFechaModificado varchar(20);
+    
+	SELECT 
+    DATE_FORMAT(re.DATENEW, '%d/%m/%Y')
+INTO vFechaModificado FROM
+    openbravo.REFUNDS r
+        JOIN
+    openbravo.TICKETS t ON r.ticket = t.id
+        JOIN
+    openbravo.RECEIPTS re ON t.id = re.id
+WHERE
+    r.id = pId;
+    
+    IF vFechaModificado is null THEN
+      
+      set vFechaModificado = '01/01/2001';
+    END IF;
+        
+RETURN vFechaModificado;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `FUN_MODIFICADO` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`quijotelui`@`%` FUNCTION `FUN_MODIFICADO`(pId varchar(255)) RETURNS varchar(20) CHARSET utf8
+BEGIN
+	DECLARE vModificado varchar(20);
+    
+	SELECT 
+    t.TICKETID
+INTO vModificado FROM
+    openbravo.REFUNDS r
+        JOIN
+    openbravo.TICKETS t ON r.ticket = t.id
+WHERE
+    r.id = pId;
+    
+    IF vModificado is null THEN
+      set vModificado = '1';
+    END IF;
+    
+    set vModificado = concat(fun_establecimiento(), '-', fun_punto_emision(), '-', lpad(vModificado, 9 , '0'));
+    
+RETURN vModificado;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `FUN_NUMROW` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`quijotelui`@`%` FUNCTION `FUN_NUMROW`() RETURNS int(11)
+    NO SQL
+begin
+      SET @var := ifnull(@var, 0) + 1;
+      return @var;
+     end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `FUN_PUNTO_EMISION` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`quijotelui`@`%` FUNCTION `FUN_PUNTO_EMISION`() RETURNS varchar(10) CHARSET utf8
+BEGIN
+	DECLARE punto_emision varchar(10);
+	select valor 
+    into punto_emision
+    from ele_parametros
+	where nombre = 'Punto Emisión'
+	and estado = 'Activo';
+    
+RETURN ifnull(punto_emision, '002');
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `v_ele_facturas`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_facturas`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_facturas` AS select cast(`t`.`TICKETID` as unsigned) AS `id`,(select `quijotelui`.`v_ele_contribuyentes`.`id` from `quijotelui`.`v_ele_contribuyentes`) AS `id_contribuyente`,cast('FV' as char(10) charset utf8) AS `codigo`,cast(concat(`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8) AS `numero`,cast('01' as char(10) charset utf8) AS `codigo_documento`,`FUN_ESTABLECIMIENTO`() AS `establecimiento`,`FUN_PUNTO_EMISION`() AS `punto_emision`,cast(lpad(`t`.`TICKETID`,9,'0') as char(10) charset utf8) AS `secuencial`,cast(`r`.`DATENEW` as date) AS `fecha`,round(sum(cast(if((`tx`.`RATE` > 0),0,(`tl`.`UNITS` * `tl`.`PRICE`)) as decimal(19,2))),2) AS `total_sin_iva`,round(sum(cast(if((`tx`.`RATE` > 0),(`tl`.`UNITS` * `tl`.`PRICE`),0) as decimal(19,2))),2) AS `total_con_iva`,round(sum(cast(if((`tx`.`RATE` > 0),((`tl`.`UNITS` * `tl`.`PRICE`) * `tx`.`RATE`),0) as decimal(19,2))),2) AS `iva`,round(sum(cast(0 as decimal(19,2))),0) AS `descuentos`,round(sum(cast(((`tl`.`UNITS` * `tl`.`PRICE`) + if((`tx`.`RATE` > 0),((`tl`.`UNITS` * `tl`.`PRICE`) * `tx`.`RATE`),0)) as decimal(19,2))),2) AS `total`,if((`c`.`POSTAL` = 'Consumidor Final'),'07',if((`c`.`POSTAL` = 'RUC'),'04',if((`c`.`POSTAL` = 'Cédula'),'05','06'))) AS `tipo_documento`,`c`.`TAXID` AS `documento`,`c`.`NAME` AS `razon_social`,`c`.`ADDRESS` AS `direccion`,cast(NULL as char(20) charset utf8) AS `guia_remision`,`FUN_DIRECCION_ESTABLECIMIENTO`() AS `direccion_establecimiento` from ((((`openbravo`.`tickets` `t` join `openbravo`.`receipts` `r` on((`t`.`ID` = `r`.`ID`))) join `openbravo`.`customers` `c` on((`c`.`ID` = `t`.`CUSTOMER`))) join `openbravo`.`ticketlines` `tl` on((`t`.`ID` = `tl`.`TICKET`))) join `openbravo`.`taxes` `tx` on((`tx`.`CATEGORY` = `tl`.`TAXID`))) where (`t`.`TICKETTYPE` = 0) group by cast(`t`.`TICKETID` as unsigned),(select `quijotelui`.`v_ele_contribuyentes`.`id` from `quijotelui`.`v_ele_contribuyentes`),cast('FAC' as char(10) charset utf8),cast(concat(`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8),cast('01' as char(10) charset utf8),`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),cast(lpad(`t`.`TICKETID`,9,'0') as char(10) charset utf8),cast(`r`.`DATENEW` as date),if((`c`.`POSTAL` = 'Consumidor Final'),'07',if((`c`.`POSTAL` = 'RUC'),'04',if((`c`.`POSTAL` = 'Cédula'),'05','06'))),`c`.`TAXID`,`c`.`NAME`,`c`.`ADDRESS`,cast(NULL as char(20) charset utf8),`FUN_DIRECCION_ESTABLECIMIENTO`() */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_ele_facturas_detalle`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_facturas_detalle`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_facturas_detalle` AS select cast(concat(`t`.`TICKETID`,`tl`.`LINE`) as unsigned) AS `id`,cast('FV' as char(10) charset utf8) AS `codigo`,cast(concat(`fun_establecimiento`(),`fun_punto_emision`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8) AS `numero`,`p`.`REFERENCE` AS `codigo_principal`,`p`.`NAME` AS `descripcion`,cast(`tl`.`UNITS` as decimal(19,2)) AS `cantidad`,cast(`tl`.`PRICE` as decimal(19,2)) AS `precio_unitario`,cast(if(((`tx`.`RATE` * 100) = 12),2,0) as char(10) charset utf8) AS `codigo_porcentaje`,cast((`tx`.`RATE` * 100) as decimal(19,2)) AS `porcentaje_iva`,cast(((`tl`.`UNITS` * `tl`.`PRICE`) * `tx`.`RATE`) as decimal(19,2)) AS `valor_iva`,cast(0 as decimal(19,2)) AS `descuento`,cast((`tl`.`UNITS` * `tl`.`PRICE`) as decimal(19,2)) AS `precio_total_sin_impuesto` from (((`openbravo`.`tickets` `t` join `openbravo`.`ticketlines` `tl` on((`t`.`ID` = `tl`.`TICKET`))) join `openbravo`.`taxes` `tx` on((`tx`.`CATEGORY` = `tl`.`TAXID`))) join `openbravo`.`products` `p` on((`p`.`ID` = `tl`.`PRODUCT`))) where (`t`.`TICKETTYPE` = 0) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_ele_impuestos`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_impuestos`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_impuestos` AS select cast(concat(`t`.`TICKETID`,`tl`.`LINE`) as unsigned) AS `id`,cast(if((`t`.`TICKETTYPE` = 0),'FV','NCV') as char(10) charset utf8) AS `codigo`,cast(concat(`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8) AS `numero`,cast('2' as char(10) charset utf8) AS `codigo_impuesto`,cast(if(((`tx`.`RATE` * 100) = 12),2,0) as char(10) charset utf8) AS `codigo_porcentaje`,sum(cast(abs((`tl`.`UNITS` * `tl`.`PRICE`)) as decimal(19,2))) AS `base_imponible`,cast((`tx`.`RATE` * 100) as decimal(19,2)) AS `tarifa`,sum(cast(if((`tx`.`RATE` = 0),0,abs(((`tl`.`UNITS` * `tl`.`PRICE`) * `tx`.`RATE`))) as decimal(19,2))) AS `valor` from ((`openbravo`.`tickets` `t` join `openbravo`.`ticketlines` `tl` on((`t`.`ID` = `tl`.`TICKET`))) join `openbravo`.`taxes` `tx` on((`tx`.`CATEGORY` = `tl`.`TAXID`))) group by cast(if((`t`.`TICKETTYPE` = 0),'FV','NCV') as char(10) charset utf8),cast(concat(`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8),cast('2' as char(10) charset utf8),cast(if(((`tx`.`RATE` * 100) = 12),2,0) as char(10) charset utf8) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_ele_informaciones`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_informaciones`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_informaciones` AS select cast(`FUN_NUMROW`() as unsigned) AS `id`,`openbravo`.`customers`.`TAXID` AS `documento`,'Email' AS `nombre`,`openbravo`.`customers`.`EMAIL` AS `valor` from `openbravo`.`customers` where ((`openbravo`.`customers`.`EMAIL` is not null) and (`openbravo`.`customers`.`EMAIL` <> '')) union select cast(`FUN_NUMROW`() as unsigned) AS `id`,`openbravo`.`customers`.`TAXID` AS `documento`,'Dirección' AS `nombre`,`openbravo`.`customers`.`ADDRESS` AS `valor` from `openbravo`.`customers` where ((`openbravo`.`customers`.`ADDRESS` is not null) and (`openbravo`.`customers`.`ADDRESS` <> '')) union select cast(`FUN_NUMROW`() as unsigned) AS `id`,`openbravo`.`customers`.`TAXID` AS `documento`,'Teléfono' AS `nombre`,`openbravo`.`customers`.`PHONE` AS `valor` from `openbravo`.`customers` where ((`openbravo`.`customers`.`PHONE` is not null) and (`openbravo`.`customers`.`PHONE` <> '')) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_ele_notas_credito`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_notas_credito`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_notas_credito` AS select cast(`t`.`TICKETID` as unsigned) AS `id`,(select `quijotelui`.`v_ele_contribuyentes`.`id` from `quijotelui`.`v_ele_contribuyentes`) AS `id_contribuyente`,cast('NCV' as char(10) charset utf8) AS `codigo`,cast(concat(`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8) AS `numero`,cast('04' as char(10) charset utf8) AS `codigo_documento`,`FUN_ESTABLECIMIENTO`() AS `establecimiento`,`FUN_PUNTO_EMISION`() AS `punto_emision`,cast(lpad(`t`.`TICKETID`,9,'0') as char(10) charset utf8) AS `secuencial`,cast(`r`.`DATENEW` as date) AS `fecha`,if((`c`.`POSTAL` = 'Consumidor Final'),'07',if((`c`.`POSTAL` = 'RUC'),'04',if((`c`.`POSTAL` = 'Cédula'),'05','06'))) AS `tipo_documento`,`c`.`TAXID` AS `documento`,`c`.`NAME` AS `razon_social`,cast('01' as char(10) charset utf8) AS `documento_modificado`,`FUN_MODIFICADO`(`t`.`ID`) AS `modificado`,`FUN_FECHA_MODIFICADO`(`t`.`ID`) AS `fecha_modificado`,round(sum(cast(abs((`tl`.`UNITS` * `tl`.`PRICE`)) as decimal(19,2))),2) AS `total_sin_impuestos`,round(sum(cast(abs(((`tl`.`UNITS` * `tl`.`PRICE`) + if((`tx`.`RATE` > 0),((`tl`.`UNITS` * `tl`.`PRICE`) * `tx`.`RATE`),0))) as decimal(19,2))),2) AS `total_modificado`,round(sum(cast(abs(if((`tx`.`RATE` > 0),0,(`tl`.`UNITS` * `tl`.`PRICE`))) as decimal(19,2))),2) AS `total_sin_iva`,round(sum(cast(abs(if((`tx`.`RATE` > 0),(`tl`.`UNITS` * `tl`.`PRICE`),0)) as decimal(19,2))),2) AS `total_con_iva`,round(sum(cast(abs(if((`tx`.`RATE` > 0),((`tl`.`UNITS` * `tl`.`PRICE`) * `tx`.`RATE`),0)) as decimal(19,2))),2) AS `iva`,cast('Devolución' as char(20) charset utf8) AS `motivo`,`FUN_DIRECCION_ESTABLECIMIENTO`() AS `direccion_establecimiento` from ((((`openbravo`.`tickets` `t` join `openbravo`.`receipts` `r` on((`t`.`ID` = `r`.`ID`))) join `openbravo`.`customers` `c` on((`c`.`ID` = `t`.`CUSTOMER`))) join `openbravo`.`ticketlines` `tl` on((`t`.`ID` = `tl`.`TICKET`))) join `openbravo`.`taxes` `tx` on((`tx`.`CATEGORY` = `tl`.`TAXID`))) where (`t`.`TICKETTYPE` = 1) group by cast(`t`.`TICKETID` as unsigned),(select `quijotelui`.`v_ele_contribuyentes`.`id` from `quijotelui`.`v_ele_contribuyentes`),cast('NCV' as char(10) charset utf8),cast(concat(`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8),cast('01' as char(10) charset utf8),`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),cast(lpad(`t`.`TICKETID`,9,'0') as char(10) charset utf8),cast(`r`.`DATENEW` as date),if((`c`.`POSTAL` = 'Consumidor Final'),'07',if((`c`.`POSTAL` = 'RUC'),'04',if((`c`.`POSTAL` = 'Cédula'),'05','06'))),`c`.`TAXID`,`c`.`NAME`,'01',`FUN_MODIFICADO`(`t`.`ID`),`FUN_FECHA_MODIFICADO`(`t`.`ID`),cast('Devolución' as char(20) charset utf8),`FUN_DIRECCION_ESTABLECIMIENTO`() */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_ele_notas_credito_detalle`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_notas_credito_detalle`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_notas_credito_detalle` AS select cast(concat(`t`.`TICKETID`,`tl`.`LINE`) as unsigned) AS `id`,cast('NCV' as char(10) charset utf8) AS `codigo`,cast(concat(`FUN_ESTABLECIMIENTO`(),`FUN_PUNTO_EMISION`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8) AS `numero`,`p`.`REFERENCE` AS `codigo_interno`,`p`.`NAME` AS `descripcion`,cast(abs(`tl`.`UNITS`) as decimal(19,2)) AS `cantidad`,cast(`tl`.`PRICE` as decimal(19,2)) AS `precio_unitario`,cast(0 as decimal(19,2)) AS `descuento`,cast(abs((`tl`.`UNITS` * `tl`.`PRICE`)) as decimal(19,2)) AS `precio_total_sin_impuesto`,cast(if(((`tx`.`RATE` * 100) = 12),2,0) as char(10) charset utf8) AS `codigo_porcentaje`,cast((`tx`.`RATE` * 100) as decimal(19,2)) AS `porcentaje_iva`,cast(abs(((`tl`.`UNITS` * `tl`.`PRICE`) * `tx`.`RATE`)) as decimal(19,2)) AS `valor_iva` from (((`openbravo`.`tickets` `t` join `openbravo`.`ticketlines` `tl` on((`t`.`ID` = `tl`.`TICKET`))) join `openbravo`.`taxes` `tx` on((`tx`.`CATEGORY` = `tl`.`TAXID`))) join `openbravo`.`products` `p` on((`p`.`ID` = `tl`.`PRODUCT`))) where (`t`.`TICKETTYPE` = 1) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_ele_pagos`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_pagos`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_pagos` AS select cast(concat(`t`.`TICKETID`,(rand() * 100)) as unsigned) AS `id`,cast('FV' as char(10) charset utf8) AS `codigo`,cast(concat(`fun_establecimiento`(),`fun_punto_emision`(),lpad(`t`.`TICKETID`,9,'0')) as char(20) charset utf8) AS `numero`,cast(if((`p`.`PAYMENT` = 'cash'),'01','20') as char(10) charset utf8) AS `forma_pago`,cast(if((`p`.`PAYMENT` = 'cash'),'SIN UTILIZACION DEL SISTEMA FINANCIERO','OTROS CON UTILIZACION DEL SISTEMA\n                            FINANCIERO') as char(100) charset utf8) AS `forma_pago_descripcion`,cast(`p`.`TOTAL` as decimal(19,2)) AS `total`,cast(NULL as char(20) charset utf8) AS `plazo`,cast(NULL as char(20) charset utf8) AS `tiempo` from ((`openbravo`.`tickets` `t` join `openbravo`.`receipts` `r` on((`t`.`ID` = `r`.`ID`))) join `openbravo`.`payments` `p` on((`r`.`ID` = `p`.`RECEIPT`))) where (`t`.`TICKETTYPE` = 0) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_ele_reporte_facturas`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_reporte_facturas`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_reporte_facturas` AS select `f`.`id` AS `id`,`f`.`codigo` AS `codigo`,`f`.`numero` AS `numero`,`f`.`establecimiento` AS `establecimiento`,`f`.`punto_emision` AS `punto_emision`,`f`.`secuencial` AS `secuencial`,`f`.`fecha` AS `fecha`,`f`.`total_sin_iva` AS `total_sin_iva`,`f`.`total_con_iva` AS `total_con_iva`,`f`.`iva` AS `iva`,`f`.`descuentos` AS `descuentos`,`f`.`total` AS `total`,`f`.`documento` AS `documento`,`f`.`razon_social` AS `razon_social`,(select `i`.`valor` from `quijotelui`.`v_ele_informaciones` `i` where ((`i`.`nombre` = 'Email') and (`i`.`documento` = `f`.`documento`)) limit 1) AS `correo_electronico`,ifnull((select `e`.`estado` from `quijotelui`.`ele_documentos_electronicos` `e` where ((`e`.`codigo` = `f`.`codigo`) and (`e`.`numero` = `f`.`numero`))),'NO ENVIADO') AS `estado` from `quijotelui`.`v_ele_facturas` `f` order by `f`.`numero` desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_ele_reporte_notas_credito`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_ele_reporte_notas_credito`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`quijotelui`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_ele_reporte_notas_credito` AS select `nc`.`id` AS `id`,`nc`.`codigo` AS `codigo`,`nc`.`numero` AS `numero`,`nc`.`establecimiento` AS `establecimiento`,`nc`.`punto_emision` AS `punto_emision`,`nc`.`secuencial` AS `secuencial`,`nc`.`fecha` AS `fecha`,`nc`.`documento` AS `documento`,`nc`.`razon_social` AS `razon_social`,`nc`.`documento_modificado` AS `documento_modificado`,`nc`.`total_sin_impuestos` AS `total_sin_impuestos`,`nc`.`total_sin_iva` AS `total_sin_iva`,`nc`.`total_con_iva` AS `total_con_iva`,`nc`.`iva` AS `iva`,(select `i`.`valor` from `quijotelui`.`v_ele_informaciones` `i` where ((`i`.`nombre` = 'Email') and (`i`.`documento` = `nc`.`documento`)) limit 1) AS `correo_electronico`,ifnull((select `e`.`estado` from `quijotelui`.`ele_documentos_electronicos` `e` where ((`e`.`codigo` = `nc`.`codigo`) and (`e`.`numero` = `nc`.`numero`))),'NO ENVIADO') AS `estado` from `quijotelui`.`v_ele_notas_credito` `nc` order by `nc`.`id` desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-09-14 22:54:28
