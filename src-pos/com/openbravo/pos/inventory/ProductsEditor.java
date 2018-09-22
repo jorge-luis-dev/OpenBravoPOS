@@ -337,8 +337,12 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         myprod[2] = m_jCode.getText();
         myprod[3] = m_jName.getText();
         myprod[4] = Boolean.valueOf(m_jComment.isSelected());
-        myprod[5] = Boolean.valueOf(m_jScale.isSelected());
+        myprod[5] = Boolean.valueOf(m_jScale.isSelected());      
+        System.out.println("Create before m_jPriceBuy " + m_jPriceBuy.getText());
+        //Reemplazar . por , en caso de teclado numérico
+        m_jPriceBuy.setText(m_jPriceBuy.getText().replace(".", ","));
         myprod[6] = Formats.CURRENCY.parseValue(m_jPriceBuy.getText());
+        System.out.println("Create after m_jPriceBuy " + myprod[6]);
         myprod[7] = pricesell;
         myprod[8] = m_CategoryModel.getSelectedKey();
         myprod[9] = taxcatmodel.getSelectedKey();
@@ -433,6 +437,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         if (!priceselllock) {
             priceselllock = true;
             pricesell = value;
+            m_jPriceSell.setText(m_jPriceSell.getText().replace(".", ","));
             m_jPriceSell.setText(Formats.CURRENCY.formatValue(pricesell));  
             priceselllock = false;
         }
@@ -442,7 +447,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         public void changedUpdate(DocumentEvent e) {
             if (!priceselllock) {
                 priceselllock = true;
-                pricesell = readCurrency(m_jPriceSell.getText());
+                //Reemplazar . por , en caso de teclado numérico
+                pricesell = readCurrency(m_jPriceSell.getText().replace(".", ","));
                 priceselllock = false;
             }
             calculateMargin();
@@ -451,7 +457,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         public void insertUpdate(DocumentEvent e) {
             if (!priceselllock) {
                 priceselllock = true;
-                pricesell = readCurrency(m_jPriceSell.getText());
+                //Reemplazar . por , en caso de teclado numérico
+                pricesell = readCurrency(m_jPriceSell.getText().replace(".", ","));
                 priceselllock = false;
             }
             calculateMargin();
@@ -460,7 +467,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         public void removeUpdate(DocumentEvent e) {
             if (!priceselllock) {
                 priceselllock = true;
-                pricesell = readCurrency(m_jPriceSell.getText());
+                //Reemplazar . por , en caso de teclado numérico
+                pricesell = readCurrency(m_jPriceSell.getText().replace(".", ","));
                 priceselllock = false;
             }
             calculateMargin();
