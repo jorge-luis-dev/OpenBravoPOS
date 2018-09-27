@@ -31,7 +31,7 @@ CREATE TABLE `ele_documentos_electronicos` (
   `observacion` varchar(4000) DEFAULT NULL,
   `estado` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1036 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `v_ele_contribuyentes` (
 
 LOCK TABLES `v_ele_contribuyentes` WRITE;
 /*!40000 ALTER TABLE `v_ele_contribuyentes` DISABLE KEYS */;
-INSERT INTO `v_ele_contribuyentes` VALUES (1,'IDEAS EN BINARIO','IDEAS EN BINARIO','9999999999999',NULL,'Cananvalle','NO');
+INSERT INTO `v_ele_contribuyentes` VALUES (1,'IDEAS EN BINARIO','IDEAS EN BINARIO','9999999999999',NULL,'Ecuador','NO');
 /*!40000 ALTER TABLE `v_ele_contribuyentes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -914,4 +914,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-14 22:54:28
+-- Dump completed on 2018-09-27 14:05:46
