@@ -599,8 +599,6 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         jLabel2.setText(AppLocal.getIntString("label.prodname")); // NOI18N
         add(jLabel2);
         jLabel2.setBounds(180, 50, 70, 15);
-
-        m_jRef.setEditable(false);
         add(m_jRef);
         m_jRef.setBounds(90, 50, 70, 23);
         add(m_jName);
