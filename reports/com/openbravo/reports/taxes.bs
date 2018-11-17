@@ -32,8 +32,8 @@ report.setSentence(
                 "WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND TAXLINES.TAXID = TAXES.ID AND TAXES.CATEGORY = TAXCATEGORIES.ID " +
                 "AND ?(QBF_FILTER) " +
                 "GROUP BY TAXCATEGORIES.ID,  TAXCATEGORIES.NAME");
-report.addParameter("RECEIPTS.DATENEW");
-report.addParameter("RECEIPTS.DATENEW");
+report.addParameter("DATE(RECEIPTS.DATENEW)");
+report.addParameter("DATE(RECEIPTS.DATENEW)");
 report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
 
 report.addField("TAXID", com.openbravo.data.loader.Datas.STRING);

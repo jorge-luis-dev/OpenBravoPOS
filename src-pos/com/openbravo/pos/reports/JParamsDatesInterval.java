@@ -17,6 +17,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
+
 package com.openbravo.pos.reports;
 
 import com.openbravo.pos.forms.AppView;
@@ -37,13 +38,13 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
     public JParamsDatesInterval() {
         initComponents();
     }
-    
+    //Se cambio en TIMESTAMP por DATE, para que ya no salga la hora
     public void setStartDate(Date d) {
-        jTxtStartDate.setText(Formats.TIMESTAMP.formatValue(d));
+        jTxtStartDate.setText(Formats.DATE.formatValue(d));
     }
-    
+    //Se cambio en TIMESTAMP por DATE, para que ya no salga la hora
     public void setEndDate(Date d) {
-        jTxtEndDate.setText(Formats.TIMESTAMP.formatValue(d));
+        jTxtEndDate.setText(Formats.DATE.formatValue(d));
     }
 
     public void init(AppView app) {
@@ -59,14 +60,15 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
     public Component getComponent() {
         return this;
     }
-    
+    //Se cambio en TIMESTAMP por DATE, para que ya no salga la hora
     public Object createValue() throws BasicException {
-        Object startdate = Formats.TIMESTAMP.parseValue(jTxtStartDate.getText());
-        Object enddate = Formats.TIMESTAMP.parseValue(jTxtEndDate.getText());   
+        Object startdate = Formats.DATE.parseValue(jTxtStartDate.getText());
+        Object enddate = Formats.DATE.parseValue(jTxtEndDate.getText());   
         return new Object[] {
             startdate == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_GREATEROREQUALS,
             startdate,
-            enddate == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_LESS,
+            //Se cambio en COMP_LESS por COMP_LESSOREQUALS, para filtrar de un solo día
+            enddate == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_LESSOREQUALS,
             enddate
         };
     }    
@@ -120,32 +122,32 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
         add(btnDateEnd);
         btnDateEnd.setBounds(350, 50, 50, 26);
     }// </editor-fold>//GEN-END:initComponents
-
+    //Se cambio en TIMESTAMP por DATE, para que ya no salga la hora
     private void btnDateStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateStartActionPerformed
 
         Date date;
         try {
-            date = (Date) Formats.TIMESTAMP.parseValue(jTxtStartDate.getText());
+            date = (Date) Formats.DATE.parseValue(jTxtStartDate.getText());
         } catch (BasicException e) {
             date = null;
         }        
         date = JCalendarDialog.showCalendarTimeHours(this, date);
         if (date != null) {
-            jTxtStartDate.setText(Formats.TIMESTAMP.formatValue(date));
+            jTxtStartDate.setText(Formats.DATE.formatValue(date));
         }             
     }//GEN-LAST:event_btnDateStartActionPerformed
-
+    //Se cambio en TIMESTAMP por DATE, para que ya no salga la hora
     private void btnDateEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateEndActionPerformed
 
         Date date;
         try {
-            date = (Date) Formats.TIMESTAMP.parseValue(jTxtEndDate.getText());
+            date = (Date) Formats.DATE.parseValue(jTxtEndDate.getText());
         } catch (BasicException e) {
             date = null;
         }        
         date = JCalendarDialog.showCalendarTimeHours(this, date);
         if (date != null) {
-            jTxtEndDate.setText(Formats.TIMESTAMP.formatValue(date));
+            jTxtEndDate.setText(Formats.DATE.formatValue(date));
         }          
     }//GEN-LAST:event_btnDateEndActionPerformed
     
