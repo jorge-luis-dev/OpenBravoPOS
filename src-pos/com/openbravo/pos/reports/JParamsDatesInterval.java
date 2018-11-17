@@ -67,7 +67,8 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
         return new Object[] {
             startdate == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_GREATEROREQUALS,
             startdate,
-            //Se cambio en COMP_LESS por COMP_LESSOREQUALS, para filtrar de un solo día
+            // Jorge Luis
+            // Se cambio en COMP_LESS por COMP_LESSOREQUALS, para filtrar de un solo día            
             enddate == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_LESSOREQUALS,
             enddate
         };
@@ -122,6 +123,7 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
         add(btnDateEnd);
         btnDateEnd.setBounds(350, 50, 50, 26);
     }// </editor-fold>//GEN-END:initComponents
+    // Jorge Luis
     //Se cambio en TIMESTAMP por DATE, para que ya no salga la hora
     private void btnDateStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateStartActionPerformed
 
@@ -136,6 +138,7 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
             jTxtStartDate.setText(Formats.DATE.formatValue(date));
         }             
     }//GEN-LAST:event_btnDateStartActionPerformed
+    // Jorge Luis
     //Se cambio en TIMESTAMP por DATE, para que ya no salga la hora
     private void btnDateEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateEndActionPerformed
 
