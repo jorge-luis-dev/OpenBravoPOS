@@ -628,11 +628,11 @@ public class ProductsEditor extends JPanel implements EditorRecord {
 
         jLabel4.setText(AppLocal.getIntString("label.prodpricesell")); // NOI18N
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(10, 80, 150, 15);
+        jLabel4.setBounds(10, 140, 150, 15);
 
         m_jPriceSell.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel1.add(m_jPriceSell);
-        m_jPriceSell.setBounds(160, 80, 80, 23);
+        m_jPriceSell.setBounds(160, 140, 80, 23);
 
         jLabel5.setText(AppLocal.getIntString("label.prodcategory")); // NOI18N
         jPanel1.add(jLabel5);
@@ -642,13 +642,13 @@ public class ProductsEditor extends JPanel implements EditorRecord {
 
         jLabel7.setText(AppLocal.getIntString("label.taxcategory")); // NOI18N
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(10, 140, 150, 15);
+        jLabel7.setBounds(10, 80, 150, 15);
         jPanel1.add(m_jTax);
-        m_jTax.setBounds(160, 140, 170, 20);
+        m_jTax.setBounds(160, 80, 170, 20);
 
         m_jmargin.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel1.add(m_jmargin);
-        m_jmargin.setBounds(250, 80, 80, 23);
+        m_jmargin.setBounds(250, 140, 80, 23);
 
         m_jPriceSellTax.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel1.add(m_jPriceSellTax);
