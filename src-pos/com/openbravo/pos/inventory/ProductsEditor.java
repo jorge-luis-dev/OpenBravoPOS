@@ -526,7 +526,10 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     }
     
     private final static Double readCurrency(String sValue) {
+        System.out.println(sValue);
+        sValue = sValue.replace(".", ",");
         try {
+            System.out.println("readCurrency" + (Double) Formats.CURRENCY.parseValue(sValue));
             return (Double) Formats.CURRENCY.parseValue(sValue);
         } catch (BasicException e) {
             return null;
