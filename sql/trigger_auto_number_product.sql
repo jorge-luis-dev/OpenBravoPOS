@@ -3,7 +3,6 @@ DELIMITER $$
 CREATE TRIGGER auto_number_product BEFORE INSERT ON products
        FOR EACH ROW 
 BEGIN
-	SET NEW.reference = ifnull(cast((select max(cast(reference as UNSIGNED) + 1) from products) as char(10)), 1);
     if NEW.code = '' or isnull(NEW.code) then
 		SET NEW.code = NEW.reference;
     end if;

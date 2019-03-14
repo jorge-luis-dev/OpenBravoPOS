@@ -36,7 +36,10 @@ import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.sales.TaxesLogic;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -64,10 +67,12 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     
     private boolean reportlock = false;
     
+    DataLogicSales product;
+    
     /** Creates new form JEditProduct */
     public ProductsEditor(DataLogicSales dlSales, DirtyManager dirty) {
         initComponents();
-        
+        product = dlSales;
         // The taxes sentence
         taxsent = dlSales.getTaxList();
              
@@ -184,13 +189,25 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         calculateMargin();
         calculatePriceSellTax();
     }
+    //Retorna el último número más uno de la columna referencia de la tabla products
+    private String getSequence() {
+        SentenceList sequence = product.getProductSequence();
+        try {
+            List l =sequence.list("secuencia");
+            return (String) l.get(0);
+        } catch (BasicException ex) {
+            Logger.getLogger(ProductsEditor.class.getName()).log(Level.SEVERE, null, ex);
+            return "0";
+        }
+    }
     public void writeValueInsert() {
        
         reportlock = true;
         // Los valores
         m_jTitle.setText(AppLocal.getIntString("label.recordnew"));
         m_id = UUID.randomUUID().toString();
-        m_jRef.setText(null);
+        
+        m_jRef.setText(getSequence());
         m_jCode.setText(null);
         m_jName.setText(null);
         m_jComment.setSelected(false);
