@@ -294,6 +294,9 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
 
     public String printPrice() {
+        if (this.getProductTaxCategoryID().equals("003")) {
+            return Formats.CURRENCY.formatValue(0);
+        }
         return Formats.CURRENCY.formatValue(getPrice());
     }
 
