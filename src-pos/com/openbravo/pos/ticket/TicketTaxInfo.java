@@ -59,7 +59,7 @@ public class TicketTaxInfo {
     }
 
     public String printSubTotal() {
-        return Formats.CURRENCY.formatValue(new Double(getSubTotal()));        
+        return Formats.CURRENCY.formatValue(new Double(getSubTotal()));
     }
 
     public String printTax() {
@@ -76,7 +76,10 @@ public class TicketTaxInfo {
             return "Tarifa 0%";
         } else if (nombre.equals("IVA 12")) {
             return "Tarifa 12% (i)";
+        } else if (tax.getTaxCategoryID().equals("003")) {
+            return "ICE";
         }
+
         return "";
     }
 }
