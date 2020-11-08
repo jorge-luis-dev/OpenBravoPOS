@@ -1,0 +1,17 @@
+ALTER TABLE tickets
+ADD COLUMN DOCUMENTO VARCHAR(90) NULL AFTER STATUS;
+
+select concat('001101', lpad(TICKETID, 9, 0)) from tickets;
+
+update tickets
+set documento = concat('001101', lpad(TICKETID, 9, 0));
+
+
+ALTER TABLE `tickets` 
+CHANGE COLUMN `DOCUMENTO` `DOCUMENTO` VARCHAR(90) NOT NULL ;
+
+ALTER TABLE `tickets` 
+ADD INDEX `DOCUMENTO_IDX` (`DOCUMENTO` ASC);
+
+
+

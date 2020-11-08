@@ -44,6 +44,7 @@ import com.openbravo.pos.ticket.FindTicketsInfo;
 import com.openbravo.pos.ticket.TicketTaxInfo;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -390,7 +391,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 
                 // new ticket
                 new PreparedSentence(s,
-                         "INSERT INTO TICKETS (ID, TICKETTYPE, TICKETID, PERSON, CUSTOMER) VALUES (?, ?, ?, ?, ?)",
+                         "INSERT INTO TICKETS (ID, TICKETTYPE, TICKETID, PERSON, CUSTOMER, DOCUMENTO) VALUES (?, ?, ?, ?, ?, ?)",
                          SerializerWriteParams.INSTANCE
                 ).exec(new DataParams() {
                     public void writeValues() throws BasicException {
@@ -399,6 +400,18 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                         setInt(3, ticket.getTicketId());
                         setString(4, ticket.getUser().getId());
                         setString(5, ticket.getCustomerId());
+                        
+                        System.out.println("Establecimiento " 
+                                + ticket.getEstablecimiento());
+                        System.out.println("Punto Emision " 
+                                + ticket.getPuntoEmision());
+                        
+                        String serie = ticket.getEstablecimiento() 
+                                + ticket.getPuntoEmision();
+                        
+                        setString(6, serie + StringUtils
+                                .leftPad(Integer
+                                        .toString(ticket.getTicketId()), 9, '0'));
                     }
                 });
 

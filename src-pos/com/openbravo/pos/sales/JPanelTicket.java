@@ -933,6 +933,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         ticket.setActiveCash(m_App.getActiveCashIndex());
                         ticket.setDate(new Date()); // Le pongo la fecha de cobro
 
+                        ticket.setRuc(dlSystem.getResourceAsText("Empresa.RUC"));
+                        ticket.setEstablecimiento(dlSystem.getResourceAsText("Empresa.Establecimiento"));
+                        ticket.setPuntoEmision(dlSystem.getResourceAsText("Empresa.PuntoEmision"));
+                        ticket.setRazonSocial(dlSystem.getResourceAsText("Empresa.RazonSocial"));
+                        ticket.setNombreComercial(dlSystem.getResourceAsText("Empresa.NombreComercial"));
+                        ticket.setDireccion1(dlSystem.getResourceAsText("Empresa.Direccion1"));
+                        ticket.setDireccion2(dlSystem.getResourceAsText("Empresa.Direccion2"));
+                        ticket.setAmbiente(dlSystem.getResourceAsText("Empresa.Ambiente"));
+
                         if (executeEvent(ticket, ticketext, "ticket.save") == null) {
                             // Save the receipt and assign a receipt number
                             try {
@@ -943,15 +952,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             }
 
                             executeEvent(ticket, ticketext, "ticket.close", new ScriptArg("print", paymentdialog.isPrintSelected()));
-
-                            ticket.setRuc(dlSystem.getResourceAsText("Empresa.RUC"));
-                            ticket.setEstablecimiento(dlSystem.getResourceAsText("Empresa.Establecimiento"));
-                            ticket.setPuntoEmision(dlSystem.getResourceAsText("Empresa.PuntoEmision"));
-                            ticket.setRazonSocial(dlSystem.getResourceAsText("Empresa.RazonSocial"));
-                            ticket.setNombreComercial(dlSystem.getResourceAsText("Empresa.NombreComercial"));
-                            ticket.setDireccion1(dlSystem.getResourceAsText("Empresa.Direccion1"));
-                            ticket.setDireccion2(dlSystem.getResourceAsText("Empresa.Direccion2"));
-                            ticket.setAmbiente(dlSystem.getResourceAsText("Empresa.Ambiente"));
 
                             // Print receipt.
                             printTicket(paymentdialog.isPrintSelected()
