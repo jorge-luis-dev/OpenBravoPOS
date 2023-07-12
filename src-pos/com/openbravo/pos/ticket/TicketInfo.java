@@ -345,6 +345,32 @@ public class TicketInfo implements SerializableRead, Externalizable {
         }
         return sum;
     }
+    
+    public double getSubTotalIVA() {
+
+        double sum = 0.0;
+
+        for (TicketLineInfo line : m_aLines) {
+            if (line.getTaxInfo().getRate() > 0) {
+                sum += line.getSubValue();
+            }
+        }
+
+        return sum;
+    }
+    
+    public double getSubTotalIVA0() {
+
+        double sum = 0.0;
+
+        for (TicketLineInfo line : m_aLines) {
+            if (line.getTaxInfo().getRate() == 0) {
+                sum += line.getSubValue();
+            }
+        }
+
+        return sum;
+    }
 
     public double getTotal() {
 
@@ -546,6 +572,14 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
     public String printTax() {
         return Formats.CURRENCY.formatValue(new Double(getTax()));
+    }
+    
+    public String printSubTotalIVA() {
+        return Formats.CURRENCY.formatValue(new Double(getSubTotalIVA()));
+    }
+    
+    public String printSubTotalIVA0() {
+        return Formats.CURRENCY.formatValue(new Double(getSubTotalIVA0()));
     }
 
     public String printTotal() {

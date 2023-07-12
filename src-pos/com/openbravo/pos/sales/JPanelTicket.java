@@ -279,6 +279,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_jSubtotalEuros.setText(null);
             m_jTaxesEuros.setText(null);
             m_jTotalEuros.setText(null);
+            m_jSubtotalIVA.setText(null);
+            m_jSubtotalIVA_0.setText(null);
 
             stateToZero();
 
@@ -330,10 +332,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_jSubtotalEuros.setText(null);
             m_jTaxesEuros.setText(null);
             m_jTotalEuros.setText(null);
+            m_jSubtotalIVA.setText(null);
+            m_jSubtotalIVA_0.setText(null);
         } else {
             m_jSubtotalEuros.setText(m_oTicket.printSubTotal());
             m_jTaxesEuros.setText(m_oTicket.printTax());
             m_jTotalEuros.setText(m_oTicket.printTotal());
+            m_jSubtotalIVA.setText(m_oTicket.printSubTotalIVA());
+            m_jSubtotalIVA_0.setText(m_oTicket.printSubTotalIVA0());
         }
     }
 
@@ -1249,6 +1255,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jTaxesEuros = new javax.swing.JLabel();
         m_jLblTotalEuros2 = new javax.swing.JLabel();
         m_jLblTotalEuros3 = new javax.swing.JLabel();
+        m_JLb_SubtotalIVA = new javax.swing.JLabel();
+        m_jSubtotalIVA = new javax.swing.JLabel();
+        m_jSubtotalIVA_0 = new javax.swing.JLabel();
+        m_JLb_SubtotalIVA_0 = new javax.swing.JLabel();
         m_jContEntries = new javax.swing.JPanel();
         m_jPanEntries = new javax.swing.JPanel();
         m_jNumberKeys = new com.openbravo.beans.JNumberKeys();
@@ -1416,32 +1426,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanelCentral.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        m_jPanTotals.setLayout(new java.awt.GridBagLayout());
-
         m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
         m_jTotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jTotalEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTotalEuros.setOpaque(true);
         m_jTotalEuros.setPreferredSize(new java.awt.Dimension(150, 25));
         m_jTotalEuros.setRequestFocusEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
-        m_jPanTotals.add(m_jTotalEuros, gridBagConstraints);
 
         m_jLblTotalEuros1.setText(AppLocal.getIntString("label.totalcash")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
-        m_jPanTotals.add(m_jLblTotalEuros1, gridBagConstraints);
 
         m_jSubtotalEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         m_jSubtotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -1449,14 +1441,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jSubtotalEuros.setOpaque(true);
         m_jSubtotalEuros.setPreferredSize(new java.awt.Dimension(150, 25));
         m_jSubtotalEuros.setRequestFocusEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
-        m_jPanTotals.add(m_jSubtotalEuros, gridBagConstraints);
 
         m_jTaxesEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         m_jTaxesEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -1464,32 +1448,91 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jTaxesEuros.setOpaque(true);
         m_jTaxesEuros.setPreferredSize(new java.awt.Dimension(150, 25));
         m_jTaxesEuros.setRequestFocusEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        m_jPanTotals.add(m_jTaxesEuros, gridBagConstraints);
 
         m_jLblTotalEuros2.setText(AppLocal.getIntString("label.taxcash")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        m_jPanTotals.add(m_jLblTotalEuros2, gridBagConstraints);
 
         m_jLblTotalEuros3.setText(AppLocal.getIntString("label.subtotalcash")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
-        m_jPanTotals.add(m_jLblTotalEuros3, gridBagConstraints);
 
-        jPanel4.add(m_jPanTotals, java.awt.BorderLayout.LINE_END);
+        m_JLb_SubtotalIVA.setText("Subtotal IVA");
+
+        m_jSubtotalIVA.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        m_jSubtotalIVA.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        m_jSubtotalIVA.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
+        m_jSubtotalIVA.setOpaque(true);
+        m_jSubtotalIVA.setPreferredSize(new java.awt.Dimension(150, 25));
+        m_jSubtotalIVA.setRequestFocusEnabled(false);
+
+        m_jSubtotalIVA_0.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        m_jSubtotalIVA_0.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        m_jSubtotalIVA_0.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
+        m_jSubtotalIVA_0.setOpaque(true);
+        m_jSubtotalIVA_0.setPreferredSize(new java.awt.Dimension(150, 25));
+        m_jSubtotalIVA_0.setRequestFocusEnabled(false);
+
+        m_JLb_SubtotalIVA_0.setText("Subtotal 0");
+
+        javax.swing.GroupLayout m_jPanTotalsLayout = new javax.swing.GroupLayout(m_jPanTotals);
+        m_jPanTotals.setLayout(m_jPanTotalsLayout);
+        m_jPanTotalsLayout.setHorizontalGroup(
+            m_jPanTotalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(m_jPanTotalsLayout.createSequentialGroup()
+                .addGroup(m_jPanTotalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(m_JLb_SubtotalIVA)
+                    .addComponent(m_JLb_SubtotalIVA_0, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(m_jLblTotalEuros2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(m_jPanTotalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(m_jSubtotalIVA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(m_jTaxesEuros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(m_jSubtotalIVA_0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addGroup(m_jPanTotalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(m_jPanTotalsLayout.createSequentialGroup()
+                        .addComponent(m_jLblTotalEuros3)
+                        .addGap(5, 5, 5)
+                        .addComponent(m_jSubtotalEuros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, m_jPanTotalsLayout.createSequentialGroup()
+                        .addComponent(m_jLblTotalEuros1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(m_jTotalEuros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        m_jPanTotalsLayout.setVerticalGroup(
+            m_jPanTotalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(m_jPanTotalsLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addGroup(m_jPanTotalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(m_jLblTotalEuros2)
+                    .addComponent(m_jTaxesEuros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jLblTotalEuros3)
+                    .addComponent(m_jSubtotalEuros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(m_jPanTotalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(m_jLblTotalEuros1)
+                    .addComponent(m_jTotalEuros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_jSubtotalIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_JLb_SubtotalIVA))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(m_jPanTotalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(m_jSubtotalIVA_0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(m_JLb_SubtotalIVA_0))
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(m_jPanTotals, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(m_jPanTotals, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         m_jPanelCentral.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
@@ -1759,6 +1802,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel m_JLb_SubtotalIVA;
+    private javax.swing.JLabel m_JLb_SubtotalIVA_0;
     private javax.swing.JPanel m_jButtons;
     private javax.swing.JPanel m_jButtonsExt;
     private javax.swing.JPanel m_jContEntries;
@@ -1783,6 +1828,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JLabel m_jPor;
     private javax.swing.JLabel m_jPrice;
     private javax.swing.JLabel m_jSubtotalEuros;
+    private javax.swing.JLabel m_jSubtotalIVA;
+    private javax.swing.JLabel m_jSubtotalIVA_0;
     private javax.swing.JComboBox m_jTax;
     private javax.swing.JLabel m_jTaxesEuros;
     private javax.swing.JLabel m_jTicketId;
